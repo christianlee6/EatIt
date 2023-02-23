@@ -21,3 +21,17 @@ class Recipe(db.Model):
     creator = db.relationship("User", back_populates="recipes")
     ingredients = db.relationship("Ingredient", back_populates="recipe")
     reviews = db.relationship("Review", back_populates="recipe")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "cuisine": self.cuisine,
+            "is_dessert": self.is_dessert,
+            "difficulty": self.difficulty,
+            "prep_time": self.prep_time,
+            "preview_img": self.preview_img,
+            "instructions": self.instructions,
+            "created_at": self.created_at
+        }
