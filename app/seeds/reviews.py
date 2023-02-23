@@ -8,7 +8,7 @@ def seed_reviews():
         rating = 5,
         created_at = "2/1/23",
         updated_at = "2/1/23"
-    ),
+    )
     review2 = Review(
         reviewer_id = 8,
         recipe_id = 2,
@@ -16,7 +16,7 @@ def seed_reviews():
         rating = 2,
         created_at = "2/3/23",
         updated_at = "2/3/23"
-    ),
+    )
     review3 = Review(
         reviewer_id = 7,
         recipe_id = 3,
@@ -24,7 +24,7 @@ def seed_reviews():
         rating = 4,
         created_at = "1/28/23",
         updated_at = "1/28/23"
-    ),
+    )
     review4 = Review(
         reviewer_id = 6,
         recipe_id = 4,
@@ -32,7 +32,7 @@ def seed_reviews():
         rating = 1,
         created_at = "2/10/23",
         updated_at = "2/10/23"
-    ),
+    )
     review5 = Review(
         reviewer_id = 5,
         recipe_id = 5,
@@ -40,7 +40,7 @@ def seed_reviews():
         rating = 5,
         created_at = "2/11/23",
         updated_at = "2/11/23"
-    ),
+    )
     review6 = Review(
         reviewer_id = 4,
         recipe_id = 6,
@@ -48,7 +48,7 @@ def seed_reviews():
         rating = 3,
         created_at = "2/2/23",
         updated_at = "2/2/23"
-    ),
+    )
     review7 = Review(
         reviewer_id = 3,
         recipe_id = 7,
@@ -56,7 +56,7 @@ def seed_reviews():
         rating = 5,
         created_at = "1/24/23",
         updated_at = "1/24/23"
-    ),
+    )
     review8 = Review(
         reviewer_id = 2,
         recipe_id = 8,
@@ -64,7 +64,7 @@ def seed_reviews():
         rating = 3,
         created_at = "2/5/23",
         updated_at = "2/5/23"
-    ),
+    )
     review9 = Review(
         reviewer_id = 1,
         recipe_id = 9,
@@ -72,7 +72,7 @@ def seed_reviews():
         rating = 4,
         created_at = "2/17/23",
         updated_at = "2/17/23"
-    ),
+    )
     review10 = Review(
         reviewer_id = 1,
         recipe_id = 10,
@@ -80,7 +80,7 @@ def seed_reviews():
         rating = 1,
         created_at = "1/18/23",
         updated_at = "1/18/23"
-    ),
+    )
     review11 = Review(
         reviewer_id = 5,
         recipe_id = 3,
@@ -88,7 +88,7 @@ def seed_reviews():
         rating = 4,
         created_at = "1/26/23",
         updated_at = "1/26/23"
-    ),
+    )
     review12 = Review(
         reviewer_id = 7,
         recipe_id = 2,
@@ -96,7 +96,7 @@ def seed_reviews():
         rating = 2,
         created_at = "1/30/23",
         updated_at = "1/30/23"
-    ),
+    )
     review13 = Review(
         reviewer_id = 4,
         recipe_id = 8,
@@ -104,7 +104,7 @@ def seed_reviews():
         rating = 5,
         created_at = "2/8/23",
         updated_at = "2/8/23"
-    ),
+    )
     review14 = Review(
         reviewer_id = 7,
         recipe_id = 10,

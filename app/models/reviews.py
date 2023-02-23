@@ -14,5 +14,5 @@ class Review(db.Model):
     created_at = db.Column(db.String)
     updated_at = db.Column(db.String)
 
-    reviewer = db.relationship("Recipe", back_populates="reviews")
+    reviewer = db.relationship("User", back_populates="reviews")
     recipe = db.relationship("Recipe", back_populates="reviews")
