@@ -1,0 +1,32 @@
+.recipe-detail-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    min-height: 375px;
+    border-style: solid;
+    border-color: red;
+}
+
+.recipe-detail-card-image-container {
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 15px;
+}
+
+.recipe-detail-card-image-container img {
+    position: absolute;
+    object-fit: cover;
+    width: 500px;
+    max-width: 100%;
+    min-height: 100%;
+    border-radius: 15px;
+}
+
+.recipe-detail-card-detail-container {
+    background-color: aquamarine;
+    height: 100%;
+    border-style: solid;
+}

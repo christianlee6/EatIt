@@ -1,6 +1,18 @@
 .all-recipes-wrapper {
     border-style: solid;
-    background-color: brown;
+    border-color: blue;
     margin-top: 50px;
+    width: 100%;
     height: 100%;
+}
+
+.all-recipes-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 30px 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%
 }
