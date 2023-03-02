@@ -13,8 +13,8 @@ function HomePage() {
         dispatch(getAllRecipesThunk())
     }, [dispatch])
 
-    console.log(recipesObj)
-    console.log(recipesArr)
+    console.log("recipesObj", recipesObj)
+    console.log("recipesArr", recipesArr)
 
     return (
         <>

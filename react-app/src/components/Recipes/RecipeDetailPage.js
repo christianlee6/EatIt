@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { getSingleRecipeThunk } from "../../store/recipes";
+import { getAllRecipesThunk, getSingleRecipeThunk } from "../../store/recipes";
 import { editRecipeThunk } from "../../store/recipes";
+import { getRecipeReviewsThunk } from "../../store/reviews";
+import CreateReviewForm from "../ReviewForm/CreateRecipeForm";
 import "./RecipeDetailPage.css";
 
 const RecipeDetailPage = ({}) => {
@@ -10,7 +12,20 @@ const RecipeDetailPage = ({}) => {
     const history = useHistory();
     const { recipeId } = useParams();
 
+    const reviews = useSelector((state) => state.reviews.recipe);
+    const reviewsArr = Object.values(reviews)
+    // console.log('reviewsArr:', reviewsArr)
     const recipe = useSelector((state) => state.recipes.singleRecipe);
+    // console.log("recipe", recipe)
+
+    let avgRating = 0
+    let sum = 0
+    let length = reviewsArr.length
+    reviewsArr.forEach(review => {
+        sum += review.rating
+    })
+    avgRating = (sum / length).toFixed(1)
+
     const instructions = recipe.instructions;
     const splittedInstructions = instructions?.split("Step ");
 
@@ -25,7 +40,7 @@ const RecipeDetailPage = ({}) => {
     }
 
     useEffect(() => {
-        dispatch(getSingleRecipeThunk(+recipeId));
+        dispatch(getSingleRecipeThunk(+recipeId)).then(dispatch(getRecipeReviewsThunk(+recipeId)))
     }, [dispatch, recipeId]);
 
     const handleEdit = async (e) => {
@@ -45,7 +60,7 @@ const RecipeDetailPage = ({}) => {
                             </div>
 
                             <div className="recipe-detail-author">
-                                By *AUTHOR NAME*
+                                By {recipe.creator?.first_name} {recipe.creator?.last_name}
                             </div>
                             <span>
                                 <button onClick={handleEdit}>
@@ -66,10 +81,10 @@ const RecipeDetailPage = ({}) => {
                             <div className="recipe-detail-stats">
                                 <dt className="stat-label">Time</dt>
                                 <dd className="stat-value">
-                                    {recipe.prep_time}
+                                    {recipe.prep_time} minutes
                                 </dd>
                                 <dt className="stat-label">Rating</dt>
-                                <dd className="stat-value">*RECIPE RATING*</dd>
+                                <dd className="stat-value">{avgRating}</dd>
                                 <dt className="stat-label">Difficulty</dt>
                                 <dd className="stat-value">
                                     {recipe.difficulty}
@@ -124,6 +139,57 @@ const RecipeDetailPage = ({}) => {
                                     </>
                                 ))}
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="recipe-detail-page-middle-container">
+                    <div className="recipe-detail-page-ingredients-instructions-container">
+                        <div className="recipe-detail-page-ingredients-container">
+                            <div className="recipe-detail-page-ingredients-header">
+                                RATINGS
+                            </div>
+
+                            <div className="recipe-detail-page-ingredients-yield">
+                                <div>
+                                    icon
+                                </div>
+                                <div className="recipe-detail-page-ratings-info">
+                                    <div>
+                                        {avgRating} out of 5
+                                    </div>
+                                    <div>
+                                        {reviewsArr.length} user ratings
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="recipe-detail-page-your-rating-container">
+                                <div>Your rating</div>
+                                <div>stars</div>
+                            </div>
+                        </div>
+
+                        <div className="recipe-detail-page-instructions-container">
+                            <div className="recipe-detail-page-instructions-header">
+                                REVIEWS
+                            </div>
+
+                            <CreateReviewForm />
+                            <div className="recipe-detail-page-all-reviews-container">
+
+                                {reviewsArr.map((review) => (
+                                    <div className="single-review-container">
+                                        <div>
+                                        {review.user?.first_name} {review.user?.last_name}
+                                        </div>
+                                        <div>
+                                        {review.review}
+                                        </div>
+                                    </div>
+                                ))}
+
                             </div>
                         </div>
                     </div>

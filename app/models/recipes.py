@@ -34,5 +34,5 @@ class Recipe(db.Model):
             "preview_img": self.preview_img,
             "instructions": self.instructions,
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
         }

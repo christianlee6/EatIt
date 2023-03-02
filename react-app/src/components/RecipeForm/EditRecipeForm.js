@@ -9,7 +9,7 @@ const EditRecipeForm = () => {
     const history = useHistory();
     const { recipeId } = useParams();
     const recipe = useSelector(state => state.recipes.singleRecipe)
-    console.log(recipe)
+    console.log("recipe:", recipe)
     const user = useSelector(state => state.session.user)
 
     const [name, setName] = useState("");
@@ -20,11 +20,12 @@ const EditRecipeForm = () => {
     const [preview_img, setpreview_img] = useState("");
     const [instructions, setInstructions] = useState("");
     const [createdAt, setCreatedAt] = useState("");
+    const [updatedAt, setUpdatedAt] = useState("");
     const [errors, setErrors] = useState([]);
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     useEffect(() => {
-        dispatch(editRecipeThunk(+recipeId))
+
     }, [dispatch, recipeId])
 
     useEffect(() => {
@@ -39,9 +40,13 @@ const EditRecipeForm = () => {
             setName(recipe.name)
             setDescription(recipe.description)
             setCuisine(recipe.cuisine)
+            setDifficulty(recipe.difficulty)
             setprep_time(recipe.prep_time)
             setpreview_img(recipe.preview_img)
             setInstructions(recipe.instructions)
+            setCreatedAt(recipe.created_at)
+            setUpdatedAt(recipe.updated_at)
+
         }
     }, [recipe])
 
@@ -61,6 +66,7 @@ const EditRecipeForm = () => {
         e.preventDefault();
 
        const recipeInfo = {
+            ...recipe,
             name,
             creator_id: user.id,
             description,
@@ -69,17 +75,21 @@ const EditRecipeForm = () => {
             prep_time,
             preview_img,
             instructions,
-            created_at: new Date()
+            created_at: createdAt,
+            updated_at: new Date()
         };
 
 
         const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId));
         console.log("data", data)
-        if (data) {
-          setErrors(data);
-          history.push(`/recipes/${data.id}`)
+        // console.log("data.errors", data.errors)
+        if (data.errors) {
+            // console.log("errorsArr", errorsArr)
+        //   setErrors(errorsArr);
+        //   console.log("errors", errors)
+        console.log("ln 90")
         } else {
-            console.log("no errors")
+            history.push(`/recipes/${data.id}`)
         }
       };
 

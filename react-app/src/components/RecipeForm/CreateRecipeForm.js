@@ -54,11 +54,11 @@ const CreateRecipeForm = () => {
 
         const data = await dispatch(createRecipeThunk(recipeInfo));
         console.log("data", data)
-        if (data) {
-          setErrors(data);
-          history.push(`/recipes/${data.id}`)
+        if (data.errors) {
+          setErrors(data.errors);
         } else {
-            console.log("no errors")
+            history.push(`/recipes/${data.id}`)
+            console.log("errors", errors)
         }
       };
 
@@ -84,12 +84,12 @@ const CreateRecipeForm = () => {
                         </label>
                         <label>
                             Description:
-                            <input
+                            <textarea
                                 type={"text"}
                                 required
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                            />
+                            ></textarea>
                         </label>
                         <label>
                             Cuisine:
@@ -132,14 +132,14 @@ const CreateRecipeForm = () => {
                         </label>
                         <label>
                             Instructions:
-                            <input
+                            <textarea
                                 type={"text"}
                                 required
                                 value={instructions}
                                 onChange={(e) =>
                                     setInstructions(e.target.value)
                                 }
-                            />
+                            ></textarea>
                         </label>
 
                         <button

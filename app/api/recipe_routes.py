@@ -1,10 +1,25 @@
 from flask import Blueprint, request
 from flask_login import login_required
-from app.models import db, Recipe
+from app.models import db, Recipe, Review, User
 from app.forms.recipe_form import RecipeForm
 import app.utilities as util
 
 recipe_routes = Blueprint("recipes", __name__)
+
+@recipe_routes.route("/<int:recipe_id>", methods=["DELETE"])
+@login_required
+def delete_recipe(recipe_id):
+    """
+    Delete a single recipe
+    """
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    if recipe is None:
+        return {"error": f"Could not find recipe with id {recipe_id}"}
+
+    db.session.delete(recipe)
+    db.session.commit()
+    return {"success": "True", "status_code": 200}
 
 @recipe_routes.route("/")
 def all_recipes():
@@ -13,7 +28,25 @@ def all_recipes():
     """
 
     recipes = Recipe.query.all()
-    return {"recipes": [recipe.to_dict() for recipe in recipes]}
+
+    recipesList = [recipe.to_dict() for recipe in recipes]
+    for recipe in recipesList:
+
+        user = User.query.get(recipe
+        ["creator_id"]).to_dict()
+        recipe["creator"] = user
+
+        reviews = db.session.execute(db.select(Review).filter_by(recipe_id = recipe["id"])).all()
+
+        reviewsList = [review[0].to_dict() for review in reviews]
+
+        sum = 0
+        for review in reviewsList:
+            sum += review["rating"]
+
+        recipe["avg_rating"] = sum / len(reviews)
+
+    return {"recipes": [recipe for recipe in recipesList]}
 
 @recipe_routes.route("/<int:recipe_id>")
 def single_recipe(recipe_id):
@@ -21,8 +54,12 @@ def single_recipe(recipe_id):
     Query for a single recipe
     """
 
-    recipe = Recipe.query.get(recipe_id)
-    return recipe.to_dict()
+    recipe = Recipe.query.get(recipe_id).to_dict()
+    # print(f"\n\n\n recipe", recipe)
+    user = User.query.get(recipe["creator_id"]).to_dict()
+    recipe["creator"] = user
+    # print(f"\n\n\n user", user)
+    return recipe
 
 @recipe_routes.route("", methods=["POST"])
 @login_required
@@ -64,27 +101,15 @@ def edit_recipe(recipe_id):
     form["csrf_token"].data = request.cookies["csrf_token"]
     data = form.data
     if form.validate_on_submit():
-        recipe.name = data["name"],
-        recipe.description = data["description"],
-        recipe.cuisine = data["cuisine"],
-        recipe.difficulty = data["difficulty"],
-        recipe.prep_time = data["prep_time"],
-        recipe.preview_img = data["preview_img"],
-        recipe.instructions = data["instruction"],
+        recipe.name = data["name"]
+        recipe.description = data["description"]
+        recipe.cuisine = data["cuisine"]
+        recipe.difficulty = data["difficulty"]
+        recipe.prep_time = data["prep_time"]
+        recipe.preview_img = data["preview_img"]
+        recipe.instructions = data["instructions"]
         recipe.updated_at = data["updated_at"]
 
         db.session.commit()
         return recipe.to_dict()
     return {"errors": util.validation_errors_to_error_messages(form.errors) }
-
-@recipe_routes.route("/<int:recipe_id>", methods=["DELETE"])
-@login_required
-def delete_recipe(recipe_id):
-    recipe = Recipe.query.get_or_404(recipe_id)
-
-    if recipe is None:
-        return {"error": f"Could not find recipe with id {recipe_id}"}
-
-    db.session.delete(recipe)
-    db.session.commit()
-    return {"success": "True", "status_code": 200}

@@ -21,7 +21,7 @@ const RecipeDetailCard = ({ recipe }) => {
                 </div>
 
                 <div className="recipe-detail-card-creator-name">
-                    *RECIPE.CREATOR*
+                    {recipe.creator?.first_name} {recipe.creator?.last_name}
                 </div>
 
                 <div className="recipe-detail-card-prep-time">
@@ -33,7 +33,7 @@ const RecipeDetailCard = ({ recipe }) => {
                 </div>
 
                 <div className="recipe-detail-card-rating">
-                    Rating: *REVIEW.RATING*
+                    Rating: {recipe.avg_rating}
                 </div>
             </div>
             </Link>

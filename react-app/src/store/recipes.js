@@ -129,6 +129,7 @@ const recipesReducer = (state = initialState, action) => {
 
         case EDIT_RECIPE:
             newState = {...state}
+            console.log(newState)
             const editedRecipe = {...newState.allRecipes[action.recipe.id], ...action.recipe}
             newState.singleRecipe = {...state.singleRecipe, ...editedRecipe}
             newState.allRecipes = {...state.allRecipes, [action.recipe.id]:editedRecipe}
