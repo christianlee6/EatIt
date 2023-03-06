@@ -5,3 +5,114 @@
 .hidden {
   display: none;
 }
+
+.logged-in-nav-buttons-container {
+    margin-left: 80px;
+    margin-right: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shop-now {
+    text-decoration: none;
+    color:#A7727D;
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+.empty-div {
+    width: 5vw
+}
+
+
+.profile-button {
+    color: #A7727D;
+    font-weight: 600;
+}
+
+.nav-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border-style: solid; */
+    border-bottom: solid;
+    border-width: thin;
+    border-color: #ccc;
+    width: 100%;
+    height: 70px;
+    background-color: #fff;
+}
+
+.left-tab-container {
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    height: 34px;
+    /* border-style: solid; */
+    padding: 18px 46px 20px 20px;
+    border-right: solid;
+    border-width: thin;
+    border-color: #ccc;
+}
+
+.home-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+}
+
+.label-logo-container {
+    /* background-color: cadetblue; */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.eatit-label {
+    font-size: 55px;
+    color: #A7727D;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.right-tabs-container {
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    height: 100%;
+    /* border-style: solid; */
+}
+
+.login-container {
+    /* background-color: rosybrown; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* cursor: pointer; */
+    width: 50%;
+}
+
+.login-container:hover {
+    background-color: #F9F5E7;
+}
+
+.signup-container {
+    display: flex;
+    /* background-color: aqua; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* cursor: pointer; */
+    width: 50%;
+}
+
+.signup-container:hover {
+    background-color: #F9F5E7
+}

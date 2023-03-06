@@ -1,0 +1,19 @@
+.all-recipes-wrapper {
+    /* border-style: solid; */
+    /* border-color: blue; */
+    margin-top: 10vh;
+    width: 100%;
+    height: 100%;
+
+}
+
+.all-recipes-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 2vw 5.5vh;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-left: 12px;
+    padding-right: 12px
+}

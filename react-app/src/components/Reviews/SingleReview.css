@@ -1,0 +1,14 @@
+.single-review-wrapper {
+    border-top: 2px solid #A7727D;
+}
+
+.single-review-reviewer-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.single-comment-buttons {
+    display: flex;
+    flex-direction: row;
+
+}

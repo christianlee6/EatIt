@@ -1,0 +1,11 @@
+.open-modal-button {
+    border: none;
+    background: none;
+    padding: none;
+    font-size: 16px;
+    color: #A7727D;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    line-height: 1.1em
+}

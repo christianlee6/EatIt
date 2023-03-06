@@ -4,15 +4,26 @@ from app.models import db, User, environment, SCHEMA
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     demo = User(
-        username='Demo', email='demo@aa.io', password='password')
+        first_name="Demo", last_name="User", email='demo@aa.io', password='password')
     marnie = User(
-        username='marnie', email='marnie@aa.io', password='password')
+        first_name="Marnie", last_name="Jones", email='marnie@aa.io', password='password')
     bobbie = User(
-        username='bobbie', email='bobbie@aa.io', password='password')
+        first_name="Bobbie", last_name="Smith", email='bobbie@aa.io', password='password')
+    chris = User(
+        first_name="Chris", last_name="Kim", email='chris@aa.io', password='password')
+    justin = User(
+        first_name="Justin", last_name="Brown", email='justin@aa.io', password='password')
+    sarah = User(
+        first_name="Sarah", last_name="Wong", email='sarah@aa.io', password='password')
+    jessie = User(
+        first_name="Jessie", last_name="Kidd", email='jessie@aa.io', password='password')
+    sam = User(
+        first_name="Sam", last_name="Ingram", email="sam@aa.io", password='password')
+    shannon = User(
+        first_name="Shannon", last_name="Davis", email="shannon@aa.io", password="password")
 
-    db.session.add(demo)
-    db.session.add(marnie)
-    db.session.add(bobbie)
+    all_users = [demo, marnie, bobbie, chris, justin, sarah, jessie, sam, shannon]
+    add_users = [db.session.add(user) for user in all_users]
     db.session.commit()
 
 
@@ -27,5 +38,5 @@ def undo_users():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute("DELETE FROM users")
-        
+
     db.session.commit()

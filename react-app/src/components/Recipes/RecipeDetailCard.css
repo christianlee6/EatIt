@@ -1,0 +1,69 @@
+.recipe-detail-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 445px;
+    border-style: solid;
+    /* border-color: red; */
+    background: #fff;
+    border: 1px solid #e6e6e6;
+}
+
+.recipe-detail-card-wrapper:hover {
+    box-shadow: 6px 8px 20px #A7727D;
+}
+
+.recipe-detail-card-image-container {
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    position: relative;
+    /* border-radius: 15px; */
+}
+
+.recipe-detail-card-image-container img {
+    position: absolute;
+    object-fit: cover;
+    width: 500px;
+    max-width: 100%;
+    min-height: 100%;
+    /* border-radius: 15px; */
+}
+
+.recipe-detail-card-detail-container {
+    /* background-color: aquamarine; */
+    /* border-style: solid; */
+    /* height: 100%; */
+    padding: 1em 1em 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* .recipe-detail-card-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} */
+
+.recipe-detail-card-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.difficulty-rating {
+    padding-top: 10px
+}
+
+.fa-ice-cream {
+    color: #A7727D
+}
+
+.fa-star {
+    color: #A7727D
+}
+
+.fa-clock {
+    color: #A7727D
+}
