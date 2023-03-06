@@ -10,7 +10,7 @@ class Review(db.Model):
     reviewer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
     recipe_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")))
     review = db.Column(db.String(500), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Integer)
     created_at = db.Column(db.String)
     updated_at = db.Column(db.String)
 
@@ -27,4 +27,3 @@ class Review(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
- 

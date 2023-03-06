@@ -4,14 +4,14 @@ import { getAllRecipesThunk } from "../../store/recipes"
 import RecipeDetailCard from "../Recipes/RecipeDetailCard"
 import "./HomePage.css"
 
-function HomePage() {
+function HomePage({ }) {
     const dispatch = useDispatch()
     const recipesObj = useSelector(state => state.recipes.allRecipes)
     const recipesArr = Object.values(recipesObj)
 
     useEffect(() => {
         dispatch(getAllRecipesThunk())
-    }, [dispatch])
+    }, [dispatch, recipesArr.length])
 
     console.log("recipesObj", recipesObj)
     console.log("recipesArr", recipesArr)

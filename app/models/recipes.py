@@ -15,12 +15,14 @@ class Recipe(db.Model):
     prep_time = db.Column(db.String, nullable=False)
     preview_img = db.Column(db.String, nullable=False)
     instructions = db.Column(db.String, nullable=False)
+    ingredients = db.Column(db.String, nullable=False)
+    servings = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.String, nullable=False)
     updated_at = db.Column(db.String)
 
     creator = db.relationship("User", back_populates="recipes")
-    ingredients = db.relationship("Ingredient", back_populates="recipe")
-    reviews = db.relationship("Review", back_populates="recipe")
+    # ingredients = db.relationship("Ingredient", back_populates="recipe")
+    reviews = db.relationship("Review", back_populates="recipe", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -33,6 +35,8 @@ class Recipe(db.Model):
             "prep_time": self.prep_time,
             "preview_img": self.preview_img,
             "instructions": self.instructions,
+            "ingredients": self.ingredients,
+            "servings": self.servings,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
         }

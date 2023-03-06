@@ -6,8 +6,8 @@ from app.models import Recipe
 
 def validate_name_len(form, field):
     name = field.data
-    if len(name) > 50:
-        raise ValidationError("Please enter a recipe name that is less than 50 characters.")
+    if len(name) > 100:
+        raise ValidationError("Please enter a recipe name that is less than 100 characters.")
 
 def validate_description_len(form, field):
     description = field.data
@@ -21,8 +21,8 @@ def validate_difficulty(form, field):
 
 def validate_prep_time(form, field):
     prep_time = field.data
-    if prep_time > 240:
-        raise ValidationError("Please enter a prep time that is 240 minutes or less.")
+    if prep_time > 1000:
+        raise ValidationError("Please enter a prep time that is 1000 minutes or less.")
 
 def validate_instructions_len(form, field):
     instructions = field.data
@@ -33,11 +33,14 @@ def validate_instructions_len(form, field):
 
 class RecipeForm(FlaskForm):
     name = wtf.StringField("Name", validators=[DataRequired(), validate_name_len])
+    creator_id = wtf.IntegerField("Creator ID", validators=[DataRequired()])
     description = wtf.StringField("Description", validators=[DataRequired(), validate_description_len])
     cuisine = wtf.StringField("Cuisine", validators=[DataRequired()])
     difficulty = wtf.IntegerField("Difficulty", validators=[DataRequired(), validate_difficulty])
     prep_time = wtf.IntegerField("Prep Time", validators=[DataRequired(), validate_prep_time])
     preview_img = wtf.URLField("Preview Image", validators=[DataRequired()])
     instructions = wtf.StringField("Instructions", validators=[DataRequired(), validate_instructions_len])
+    ingredients = wtf.StringField("Ingredients", validators=[DataRequired()])
+    servings = wtf.IntegerField("Servings", validators=[DataRequired()])
     created_at = wtf.StringField("Created At", validators=[DataRequired()])
     updated_at = wtf.StringField("Updated At")

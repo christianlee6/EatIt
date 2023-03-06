@@ -169,3 +169,28 @@
 .recipe-detail-page-single-step-text {
     font-size: 18px;
 }
+
+.star > button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .recipe-detail-page-your-rating-container {
+
+  }
+
+  .your-rating-clear {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .clear-button {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: lighter;
+  }
+
+

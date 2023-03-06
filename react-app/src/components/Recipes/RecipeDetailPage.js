@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { getAllRecipesThunk, getSingleRecipeThunk } from "../../store/recipes";
 import { editRecipeThunk } from "../../store/recipes";
 import { getRecipeReviewsThunk } from "../../store/reviews";
-import CreateReviewForm from "../ReviewForm/CreateRecipeForm";
+import { createReviewThunk } from "../../store/reviews";
+import { getSingleReviewThunk } from "../../store/reviews";
+import { deleteRecipeThunk } from "../../store/recipes";
+import CreateReviewForm from "../ReviewForm/CreateReviewForm";
+import OpenModalButton from "../OpenModalButton";
+import EditReviewForm from "../ReviewForm/EditReviewForm";
+import AllReviews from "../Reviews/AllReviews";
 import "./RecipeDetailPage.css";
 
 const RecipeDetailPage = ({}) => {
@@ -12,22 +19,37 @@ const RecipeDetailPage = ({}) => {
     const history = useHistory();
     const { recipeId } = useParams();
 
-    const reviews = useSelector((state) => state.reviews.recipe);
-    const reviewsArr = Object.values(reviews)
-    // console.log('reviewsArr:', reviewsArr)
-    const recipe = useSelector((state) => state.recipes.singleRecipe);
-    // console.log("recipe", recipe)
+    const user = useSelector((state) => state.session.user);
 
-    let avgRating = 0
-    let sum = 0
-    let length = reviewsArr.length
-    reviewsArr.forEach(review => {
-        sum += review.rating
-    })
-    avgRating = (sum / length).toFixed(1)
+    const [review, setReview] = useState("");
+    const [rating, setRating] = useState("");
+    const [hoverFill, setHoverFill] = useState(null);
+    const [createdAt, setCreatedAt] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    const reviews = useSelector((state) => state.reviews.recipe);
+    const reviewsArr = Object.values(reviews);
+    const recipe = useSelector((state) => state.recipes.singleRecipe);
+
+    const ingredients = recipe.ingredients;
+    // console.log("ingredients", ingredients);
+    const splitIngredients = ingredients?.split(".");
+    // console.log("splitIngredients", splitIngredients);
+
+    let avgRating = 0;
+    let sum = 0;
+    let length = reviewsArr.length;
+    reviewsArr.forEach((review) => {
+        sum += review?.rating;
+    });
+    avgRating = (sum / length).toFixed(1);
+    console.log("avgRating", avgRating);
 
     const instructions = recipe.instructions;
+    console.log('instructions', instructions)
     const splittedInstructions = instructions?.split("Step ");
+    console.log('splittedInstructions', splittedInstructions)
 
     const stepsArr = splittedInstructions?.filter(
         (instruction) => instruction.length > 1
@@ -38,16 +60,61 @@ const RecipeDetailPage = ({}) => {
         let step = stepsArr[i].substring(3);
         parsedSteps.push(step);
     }
+    console.log('parsedSteps', parsedSteps)
 
     useEffect(() => {
-        dispatch(getSingleRecipeThunk(+recipeId)).then(dispatch(getRecipeReviewsThunk(+recipeId)))
+        dispatch(getSingleRecipeThunk(+recipeId)).then(
+            dispatch(getRecipeReviewsThunk(+recipeId))
+        );
     }, [dispatch, recipeId]);
 
-    const handleEdit = async (e) => {
-        history.push(`/recipes/edit/${recipeId}`)
-    }
+    const handleRecipeEdit = async (e) => {
+        history.push(`/recipes/edit/${recipeId}`);
+    };
 
-    if (!recipe) return null;
+    const handleRecipeDelete = async (e) => {
+        if (
+            window.confirm(
+                "Are you sure you would like to delete this recipe? You cannot undo this action."
+            )
+        ) {
+            dispatch(deleteRecipeThunk(recipeId)).then(history.push("/"));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const reviewInfo = {
+            reviewer_id: user?.id,
+            recipe_id: +recipeId,
+            review,
+            rating: rating,
+            created_at: new Date(),
+            updated_at: null,
+        };
+
+        const data = await dispatch(createReviewThunk(reviewInfo));
+        if (!rating) {
+            window.alert("Please include a star rating with your review.");
+        }
+        if (!review) {
+            window.alert("Please include text with your review.");
+        }
+        // if (data.errors) {
+        //     setErrors(data.errors);
+        // }
+    };
+
+    const handleCancel = async (e) => {
+        e.preventDefault();
+        setReview("");
+    };
+
+    const handleClear = async (e) => {
+        e.preventDefault();
+        setRating(null);
+    };
 
     return (
         <>
@@ -60,21 +127,34 @@ const RecipeDetailPage = ({}) => {
                             </div>
 
                             <div className="recipe-detail-author">
-                                By {recipe.creator?.first_name} {recipe.creator?.last_name}
+                                By {recipe.creator?.first_name}{" "}
+                                {recipe.creator?.last_name}
                             </div>
-                            <span>
-                                <button onClick={handleEdit}>
-                                    Edit
-                                </button>
-                            </span>
+                            <div className="recipe-detail-options">
+                                {recipe?.creator?.id === user?.id ? (
+                                    <div className="recipe-options-container">
+                                    <div>
+                                        This is your recipe. You can edit or delete it.
+                                    </div>
+                                    <div className="recipe-option-buttons">
+                                        <button onClick={handleRecipeEdit}>
+                                            Edit
+                                        </button>
+                                        <button onClick={handleRecipeDelete}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
 
-                        {/* <div className="recipe-detail-pic-container"> */}
-                        <img
-                            src={recipe.preview_img}
-                            className="recipe-detail-image"
-                        />
-                        {/* </div> */}
+                        <div className="recipe-detail-pic-container">
+                            <img
+                                src={recipe.preview_img}
+                                className="recipe-detail-image"
+                            />
+                        </div>
                     </div>
                     <div className="recipe-detail-details-desc-container">
                         <div className="recipe-detail-stats-container">
@@ -84,7 +164,15 @@ const RecipeDetailPage = ({}) => {
                                     {recipe.prep_time} minutes
                                 </dd>
                                 <dt className="stat-label">Rating</dt>
-                                <dd className="stat-value">{avgRating}</dd>
+                                <dd className="stat-value">
+                                    <>
+                                        {isNaN(avgRating) ? (
+                                            <div>None</div>
+                                        ) : (
+                                            avgRating
+                                        )}
+                                    </>
+                                </dd>
                                 <dt className="stat-label">Difficulty</dt>
                                 <dd className="stat-value">
                                     {recipe.difficulty}
@@ -108,16 +196,17 @@ const RecipeDetailPage = ({}) => {
                             </div>
 
                             <div className="recipe-detail-page-ingredients-yield">
-                                *yield: 2 servings*
+                                Yield: {recipe.servings} servings
                             </div>
 
                             <div className="recipe-detail-page-ingredients-list-container">
-                                <div>apple</div>
-                                <div>orange</div>
-                                <div>grape</div>
-                                <div>pear</div>
-                                <div>cherry</div>
-                                <div>kiwi</div>
+                                {splitIngredients?.map((ingredient, idx) => (
+                                    <>
+                                        <div className="recipe-detail-page-single-ingredient">
+                                            {ingredient}
+                                        </div>
+                                    </>
+                                ))}
                             </div>
                         </div>
 
@@ -128,16 +217,16 @@ const RecipeDetailPage = ({}) => {
 
                             <div className="recipe-detail-page-instructions-steps-container">
                                 <div className="recipe-detail-page-single-step-container">
-                                {parsedSteps.map((step, idx) => (
-                                    <>
-                                    <div className="recipe-detail-page-single-step">
-                                        Step {idx + 1}:
-                                    </div>
-                                    <div className="recipe-detail-page-single-step-text">
-                                        {step}
-                                    </div>
-                                    </>
-                                ))}
+                                    {parsedSteps.map((step, idx) => (
+                                        <>
+                                            <div className="recipe-detail-page-single-step">
+                                                Step {idx + 1}:
+                                            </div>
+                                            <div className="recipe-detail-page-single-step-text">
+                                                {step}
+                                            </div>
+                                        </>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -152,22 +241,66 @@ const RecipeDetailPage = ({}) => {
 
                             <div className="recipe-detail-page-ingredients-yield">
                                 <div>
-                                    icon
+                                    <i class="fa-solid fa-star" />
                                 </div>
                                 <div className="recipe-detail-page-ratings-info">
                                     <div>
-                                        {avgRating} out of 5
+                                        {isNaN(avgRating) ? (
+                                            <div>No rating</div>
+                                        ) : (
+                                            <div>{avgRating} out of 5</div>
+                                        )}
                                     </div>
-                                    <div>
-                                        {reviewsArr.length} user ratings
-                                    </div>
+                                    <div>{reviewsArr.length} reviews</div>
                                 </div>
-
                             </div>
 
                             <div className="recipe-detail-page-your-rating-container">
-                                <div>Your rating</div>
-                                <div>stars</div>
+                                <div className="your-rating-clear">
+                                    <div>Your rating</div>
+                                    <div
+                                        onClick={handleClear}
+                                        className="clear-button"
+                                    >
+                                        Clear
+                                    </div>
+                                </div>
+                                <div className="star">
+                                    {[...Array(5)].map((_, idx) => {
+                                        let ratingValue = idx + 1;
+                                        return (
+                                            <button
+                                                key={idx}
+                                                onMouseEnter={() =>
+                                                    setHoverFill(ratingValue)
+                                                }
+                                                onMouseLeave={() =>
+                                                    setHoverFill(null)
+                                                }
+                                                onClick={() =>
+                                                    setRating(ratingValue)
+                                                }
+                                            >
+                                                <i
+                                                    className="fa-solid fa-star"
+                                                    size={80}
+                                                    style={{
+                                                        color:
+                                                            ratingValue <=
+                                                            (hoverFill ||
+                                                                rating)
+                                                                ? "#ffe101"
+                                                                : "#ccc",
+                                                    }}
+                                                    onChange={() =>
+                                                        setRating(ratingValue)
+                                                    }
+                                                    value={ratingValue}
+                                                ></i>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
 
@@ -176,20 +309,36 @@ const RecipeDetailPage = ({}) => {
                                 REVIEWS
                             </div>
 
-                            <CreateReviewForm />
-                            <div className="recipe-detail-page-all-reviews-container">
-
-                                {reviewsArr.map((review) => (
-                                    <div className="single-review-container">
-                                        <div>
-                                        {review.user?.first_name} {review.user?.last_name}
+                            <>
+                                <div className="recipe-detail-page-add-review-container">
+                                    <form onSubmit={handleSubmit}>
+                                        <div>Add Review</div>
+                                        <textarea
+                                            type="text"
+                                            placeholder="Write a review to let the author and other cooks know how this recipe turned out..."
+                                            value={review}
+                                            maxLength={"500"}
+                                            minLength={"3"}
+                                            onChange={(e) =>
+                                                setReview(e.target.value)
+                                            }
+                                        ></textarea>
+                                        <div className="add-review-actions">
+                                            <button
+                                                type="reset"
+                                                onClick={handleCancel}
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button type="submit">
+                                                Submit
+                                            </button>
                                         </div>
-                                        <div>
-                                        {review.review}
-                                        </div>
-                                    </div>
-                                ))}
-
+                                    </form>
+                                </div>
+                            </>
+                            <div>
+                                <AllReviews recipe_id={recipeId} />
                             </div>
                         </div>
                     </div>

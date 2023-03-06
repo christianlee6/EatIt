@@ -6,21 +6,6 @@ import app.utilities as util
 
 recipe_routes = Blueprint("recipes", __name__)
 
-@recipe_routes.route("/<int:recipe_id>", methods=["DELETE"])
-@login_required
-def delete_recipe(recipe_id):
-    """
-    Delete a single recipe
-    """
-    recipe = Recipe.query.get_or_404(recipe_id)
-
-    if recipe is None:
-        return {"error": f"Could not find recipe with id {recipe_id}"}
-
-    db.session.delete(recipe)
-    db.session.commit()
-    return {"success": "True", "status_code": 200}
-
 @recipe_routes.route("/")
 def all_recipes():
     """
@@ -29,22 +14,37 @@ def all_recipes():
 
     recipes = Recipe.query.all()
 
-    recipesList = [recipe.to_dict() for recipe in recipes]
-    for recipe in recipesList:
 
-        user = User.query.get(recipe
-        ["creator_id"]).to_dict()
-        recipe["creator"] = user
+    recipesList = [recipe.to_dict() for recipe in recipes]
+
+    for recipe in recipesList:
+        print(f"\n\n\n\n recipe", recipe)
+
+        # user = User.query.get(recipe["creator_id"]).to_dict()
+        # recipe["creator"] = user
 
         reviews = db.session.execute(db.select(Review).filter_by(recipe_id = recipe["id"])).all()
 
+
         reviewsList = [review[0].to_dict() for review in reviews]
+        print(f"\n\n\n reviewsList", len(reviewsList))
+
 
         sum = 0
         for review in reviewsList:
+            print(f"\n\n\n\n review", review)
             sum += review["rating"]
+            print(f"\n\n\n\n sum", sum)
 
-        recipe["avg_rating"] = sum / len(reviews)
+        num_reviews = len(reviewsList)
+        print(f"\n\n\n\n num_reviews", num_reviews)
+        if num_reviews == 0:
+            avg = 100
+        else:
+            avg = sum / num_reviews
+
+
+        recipe["avg_rating"] = avg
 
     return {"recipes": [recipe for recipe in recipesList]}
 
@@ -74,12 +74,15 @@ def create_recipe():
     if form.validate_on_submit():
         recipe = Recipe(
             name = data["name"],
+            creator_id = data["creator_id"],
             description = data["description"],
             cuisine = data["cuisine"],
             difficulty = data["difficulty"],
             prep_time = data["prep_time"],
             preview_img = data["preview_img"],
             instructions = data["instructions"],
+            ingredients = data["ingredients"],
+            servings = data["servings"],
             created_at = data["created_at"],
             updated_at = None
         )
@@ -102,14 +105,32 @@ def edit_recipe(recipe_id):
     data = form.data
     if form.validate_on_submit():
         recipe.name = data["name"]
+        recipe.creator_id = data["creator_id"]
         recipe.description = data["description"]
         recipe.cuisine = data["cuisine"]
         recipe.difficulty = data["difficulty"]
         recipe.prep_time = data["prep_time"]
         recipe.preview_img = data["preview_img"]
         recipe.instructions = data["instructions"]
+        recipe.ingredients = data["ingredients"]
+        recipe.servings = data["servings"]
         recipe.updated_at = data["updated_at"]
 
         db.session.commit()
         return recipe.to_dict()
     return {"errors": util.validation_errors_to_error_messages(form.errors) }
+
+@recipe_routes.route("/<int:recipe_id>", methods=["DELETE"])
+@login_required
+def delete_recipe(recipe_id):
+    """
+    Delete a single recipe
+    """
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    if recipe is None:
+        return {"error": f"Could not find recipe with id {recipe_id}"}
+
+    db.session.delete(recipe)
+    db.session.commit()
+    return {"success": "True", "status_code": 200}

@@ -14,8 +14,9 @@ function LoginFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await dispatch(login(email, password));
+    console.log('data', data)
     if (data) {
-      setErrors(data);
+      setErrors(["Invalid credentials. Please try logging in again."]);
     } else {
         closeModal()
     }
@@ -27,7 +28,7 @@ function LoginFormModal() {
       <form onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
+            <div key={idx}>{error}</div>
           ))}
         </ul>
         <label>

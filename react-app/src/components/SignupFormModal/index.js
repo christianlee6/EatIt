@@ -7,7 +7,8 @@ import "./SignupForm.css";
 function SignupFormModal() {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState([]);
@@ -15,17 +16,26 @@ function SignupFormModal() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+        let errorsArr = []
+
+        const dataErr = []
 		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
+			const data = await dispatch(signUp(first_name, last_name, email, password));
+            for (let i = 0; i < data?.length; i++) {
+                let msg = data[i]
+                let idxOf = msg.indexOf(":")
+                let pushMsg = msg.slice(idxOf + 2, msg.length)
+                dataErr.push(pushMsg)
+            }
+
 			if (data) {
-				setErrors(data);
+				setErrors(dataErr);
 			} else {
 				closeModal();
 			}
 		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
+            dataErr.push("Please check that your passwords match")
+			setErrors(dataErr)
 		}
 	};
 
@@ -35,24 +45,33 @@ function SignupFormModal() {
 			<form onSubmit={handleSubmit}>
 				<ul>
 					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
+						<div key={idx}>{error}</div>
 					))}
 				</ul>
+                <label>
+					First Name
+					<input
+						type="text"
+						value={first_name}
+						onChange={(e) => setFirstName(e.target.value)}
+						required
+					/>
+				</label>
+                <label>
+					Last Name
+					<input
+						type="text"
+						value={last_name}
+						onChange={(e) => setLastName(e.target.value)}
+						required
+					/>
+				</label>
 				<label>
 					Email
 					<input
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Username
-					<input
-						type="text"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
 						required
 					/>
 				</label>
