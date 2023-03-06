@@ -31,9 +31,10 @@ const RecipeDetailPage = ({}) => {
     const reviews = useSelector((state) => state.reviews.recipe);
     const reviewsArr = Object.values(reviews);
     const recipe = useSelector((state) => state.recipes.singleRecipe);
+    console.log('recipe', recipe)
 
     const ingredients = recipe.ingredients;
-    // console.log("ingredients", ingredients);
+    console.log("ingredients", ingredients);
     const splitIngredients = ingredients?.split(".");
     // console.log("splitIngredients", splitIngredients);
 
@@ -44,7 +45,7 @@ const RecipeDetailPage = ({}) => {
         sum += review?.rating;
     });
     avgRating = (sum / length).toFixed(1);
-    console.log("avgRating", avgRating);
+    // console.log("avgRating", avgRating);
 
     const instructions = recipe.instructions;
     console.log('instructions', instructions)
@@ -54,6 +55,7 @@ const RecipeDetailPage = ({}) => {
     const stepsArr = splittedInstructions?.filter(
         (instruction) => instruction.length > 1
     );
+    console.log('stepsArr', stepsArr)
 
     const parsedSteps = [];
     for (let i = 0; i < stepsArr?.length; i++) {

@@ -8,7 +8,7 @@ const EditRecipeForm = () => {
     const history = useHistory();
     const { recipeId } = useParams();
     const recipe = useSelector((state) => state.recipes.singleRecipe);
-    console.log("recipe:", recipe);
+    // console.log("recipe:", recipe);
     const user = useSelector((state) => state.session.user);
 
     const [name, setName] = useState("");
@@ -118,7 +118,33 @@ const EditRecipeForm = () => {
     };
 
     const handleSubmit = async (e) => {
+        // e.preventDefault();
+
+        // const trimmedArr = [];
+        // for (let i = 0; i < val?.length; i++) {
+        //     let ele = val[i];
+        //     if (typeof ele === "string") {
+        //         let trimmedEle = ele?.trim() + ".";
+        //         trimmedArr?.push(trimmedEle);
+        //     }
+        // }
+        // const parsedVal = trimmedArr?.join(" ");
+        // setIngredients(parsedVal);
+
+        // const parsedInstructions = []
+        // for (let i = 0; i < instructionsVal.length; i++) {
+        //     let instruction = instructionsVal[i]
+        //     let ele = `Step ${i + 1}: ${instruction}.`
+        //     parsedInstructions.push(ele)
+        // }
+        // console.log('parsedInstructions', parsedInstructions)
+        // const instructionsStr = parsedInstructions.join(" ")
+        // console.log('instructionsStr', instructionsStr)
+        // setInstructions(instructionsStr)
+
         e.preventDefault();
+        let errorsArr = []
+        setHasSubmitted(true)
 
         const trimmedArr = [];
         for (let i = 0; i < val?.length; i++) {
@@ -129,18 +155,37 @@ const EditRecipeForm = () => {
             }
         }
         const parsedVal = trimmedArr?.join(" ");
+        console.log("parsedVal", parsedVal)
+        if (!parsedVal) errorsArr.push("Please enter at least one ingredient")
         setIngredients(parsedVal);
+        console.log('ingredients', ingredients)
 
         const parsedInstructions = []
         for (let i = 0; i < instructionsVal.length; i++) {
             let instruction = instructionsVal[i]
-            let ele = `Step ${i + 1}: ${instruction}.`
-            parsedInstructions.push(ele)
+            if (instruction.length !== 0) {
+                let ele = `Step ${i + 1}: ${instruction}.`
+                parsedInstructions.push(ele)
+            }
         }
-        console.log('parsedInstructions', parsedInstructions)
         const instructionsStr = parsedInstructions.join(" ")
         console.log('instructionsStr', instructionsStr)
         setInstructions(instructionsStr)
+
+
+        if (!name) errorsArr.push("Please enter a name for your recipe")
+        if (name.length > 100) errorsArr.push("Recipe name must be less than 100 characters long")
+        if (!description) errorsArr.push("Please enter a description for your recipe")
+        if (description.length > 2500) errorsArr.push("Description must be less than 2500 characters long")
+        if (!cuisine) errorsArr.push("Please enter a cuisine")
+        if (cuisine.length > 50) errorsArr.push("Cuisine must be less than 50 characters long")
+        if (!prep_time) errorsArr.push("Please enter a prep time")
+        if (prep_time > 1000) errorsArr.push("Prep Time must be less than 1000 minutes")
+        if (!preview_img) errorsArr.push("Please enter an image URL")
+        // if (ingredients === ".") errorsArr.push("Please enter at least one ingredient")
+        if (!instructionsStr) errorsArr.push("Please provide at least one step")
+        if (!servings) errorsArr.push("Please include the number of servings this recipe makes")
+        if (servings > 20) errorsArr.push("Servings cannot be more than 20")
 
         const recipeInfo = {
             ...recipe,
@@ -157,18 +202,25 @@ const EditRecipeForm = () => {
             updated_at: new Date(),
         };
         console.log('recipeInfo', recipeInfo)
+        setErrors(errorsArr)
+        console.log('errors', errors)
+        const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId))
+        console.log('data', data)
 
-        const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId));
-        console.log("data", data);
-        // console.log("data.errors", data.errors)
-        if (data.errors) {
-            // console.log("errorsArr", errorsArr)
-            //   setErrors(errorsArr);
-            //   console.log("errors", errors)
-            console.log("ln 90");
-        } else {
-            history.push(`/recipes/${data.id}`);
+        if (data) {
+            history.push(`/recipes/${data.id}`)
         }
+        // const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId));
+        // console.log("data", data);
+        // // console.log("data.errors", data.errors)
+        // if (data.errors) {
+        //     // console.log("errorsArr", errorsArr)
+        //     //   setErrors(errorsArr);
+        //     //   console.log("errors", errors)
+        //     console.log("ln 90");
+        // } else {
+        //     history.push(`/recipes/${data.id}`);
+        // }
     };
 
     return (
