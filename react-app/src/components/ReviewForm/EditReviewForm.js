@@ -24,6 +24,7 @@ const EditReviewForm = ({ review }) => {
     const [createdAt, setCreatedAt] = useState("");
     const [updatedAt, setUpdatedAt] = useState("");
 
+    const [hoverFill, setHoverFill] = useState(null);
     const [errors, setErrors] = useState([]);
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -38,8 +39,15 @@ const EditReviewForm = ({ review }) => {
         }
     }, [review]);
 
+    const handleClear = async (e) => {
+        e.preventDefault();
+        setRating(null);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let errorsArr = [];
+        setHasSubmitted(true);
 
         const reviewInfo = {
             ...review,
@@ -51,11 +59,26 @@ const EditReviewForm = ({ review }) => {
             updated_at: new Date(),
         };
 
-        const data = dispatch(editReviewThunk(reviewInfo, review.id)).then(
-            () => {
-                dispatch(getRecipeReviewsThunk(review.recipe_id)).then(closeModal());
-            }
-        );
+        if (!rating) {
+            errorsArr.push("Please include a star rating with your review.");
+        }
+        if (!review) {
+            errorsArr.push("Please include text with your review.");
+        }
+        if (review.length > 250) {
+            errorsArr.push("Review must be less than 250 characters long");
+        }
+
+        setErrors(errorsArr);
+
+        if (errorsArr.length === 0) {
+            dispatch(editReviewThunk(reviewInfo, review.id)).then(closeModal())
+        }
+        // const data = dispatch(editReviewThunk(reviewInfo, review.id)).then(
+        //     () => {
+        //         dispatch(getRecipeReviewsThunk(review.recipe_id)).then(closeModal());
+        //     }
+        // );
         // if (data.errors) {
         //     setErrors(data.errors);
         // }
@@ -68,9 +91,14 @@ const EditReviewForm = ({ review }) => {
 
     return (
         <>
-            <div className="recipe-detail-page-add-review-container">
+            <div className="login-wrapper">
                 <form onSubmit={handleSubmit}>
-                    <div>Edit Your Review</div>
+                    <div className="login-header">Edit Your Review</div>
+                    <div className="line-break"></div>
+                    <div className="validation-errors">
+                    {hasSubmitted &&
+                        errors?.map((error) => <div key={error}>{error}</div>)}
+                </div>
                     <textarea
                         type="text"
                         value={reviewText}
@@ -78,9 +106,57 @@ const EditReviewForm = ({ review }) => {
                         minLength={"3"}
                         onChange={(e) => setReviewText(e.target.value)}
                     ></textarea>
+                             <div className="recipe-detail-page-your-rating-container">
+                                <div className="your-rating-clear">
+                                    <div>Your rating</div>
+                                    <div
+                                        onClick={handleClear}
+                                        className="clear-button"
+                                    >
+                                        Clear
+                                    </div>
+                                </div>
+                                <div className="star">
+                                    {[...Array(5)].map((_, idx) => {
+                                        let ratingValue = idx + 1;
+                                        return (
+                                            <button
+                                            type="button"
+                                                key={idx}
+                                                onMouseEnter={() =>
+                                                    setHoverFill(ratingValue)
+                                                }
+                                                onMouseLeave={() =>
+                                                    setHoverFill(null)
+                                                }
+                                                onClick={() =>
+                                                    setRating(ratingValue)
+                                                }
+                                            >
+                                                <i
+                                                    className="fa-solid fa-star"
+                                                    size={80}
+                                                    style={{
+                                                        color:
+                                                            ratingValue <=
+                                                            (hoverFill ||
+                                                                rating)
+                                                                ? "#ffe101"
+                                                                : "#ccc",
+                                                    }}
+                                                    onChange={() =>
+                                                        setRating(ratingValue)
+                                                    }
+                                                    value={ratingValue}
+                                                ></i>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                     <div className="add-review-actions">
-                        <button type="reset" onClick={handleCancel}>Cancel</button>
-                        <button type="submit">Submit</button>
+                        <button class="review-buttons" type="reset" onClick={handleCancel}>Cancel</button>
+                        <button class="review-buttons" type="submit">Submit</button>
                     </div>
                 </form>
             </div>

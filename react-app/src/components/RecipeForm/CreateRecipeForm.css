@@ -1,34 +1,125 @@
-.create-recipe-whole-container {
+.login-wrapper {
+    border-radius: 8px;
+    margin-top: 25px;
+  }
+
+  .login-header {
+    color: #A7727D;
+  font-weight: bold;
+  font-size: 24px;
+  padding: 7.5px 0px;
+  width: fit-content;
+  margin: auto;
+}
+
+.line-break {
+    height: 0.01rem;
+    background-color: #EDDBC7;
+    width: 100%;
+  }
+
+  .login-subheader {
+    color: #A7727D;
+    font-weight: bold;
+    font-size: 22px;
+    margin: auto;
+    margin-top: 10px;
+  }
+
+  .validation-errors {
+    list-style: none;
+    font-size: 14px;
+    color: #A7727D;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 20px 20px 10px 30px;
+  }
+
+  .form-input-wrapper {
+    border: rgb(200, 200, 200) 1px solid;
+    border-radius: 9px;
+
+    margin: 15px 25px 25px 25px;
+    padding-left: 10px;
+    padding-top: 5px;
+  }
+
+  .input-field {
+    color: #A7727D;
+    font-size: 16px;
     align-items: center;
-}
+    /* padding-left: 3px; */
+  }
 
-form {
+  .form-input-break{
+    background-color: rgb(200, 200, 200);
+    height:1px;
+    margin-left: -11px;
+    width: 102%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  .submit {
+    width: 89%;
+    padding: 10px;
+    /* margin: 0px 25px 5px 25px; */
+    margin: auto;
+    margin-bottom: 10px;
+    border: 1px #A7727D solid;
+    border-radius: 4px;
+    background: #A7727D;
+    color: white;
+    font: bold;
+    cursor: pointer;
+  }
+
+  form {
     display: flex;
     flex-direction: column;
-    border-style: solid;
-    border-color: aqua;
-}
+    width: 600px;
+    margin: auto;
 
-.recipe-name-description-container {
+  }
+
+  input {
+    width: 95%;
+    font-size: 14px;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    margin: 4px 0px;
+  }
+
+  .single-ingredient {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .instruction-input-and-delete {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .single-instruction {
     display: flex;
     flex-direction: column;
-    border-style: solid;
-    border-color: black;
-}
+  }
 
-.ingredients-container {
-        display: flex;
-    flex-direction: column;
-    border-style: solid;
-    border-color: black;
-}
+  .delete-ingredient-instruction-button {
+    border: none;
+    padding: none;
+    color: white;
+    background-color: #A7727D;
+    cursor: pointer;
+    padding: auto;
+  }
 
-.instructions-container {
-        display: flex;
-    flex-direction: column;
-    border-style: solid;
-    border-color: black;
-}
+  .add {
+    color: #A7727D;
+    cursor: pointer;
+    margin-top: 10px;
+  }

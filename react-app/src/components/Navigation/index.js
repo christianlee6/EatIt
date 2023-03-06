@@ -7,6 +7,7 @@ import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
 import LoginFormModal from "../LoginFormModal";
 import { getAllRecipesThunk } from "../../store/recipes";
+import logo from "./images/favicon.png";
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
@@ -16,7 +17,10 @@ function Navigation({ isLoaded }) {
     if (sessionUser) {
         sessionLinks = (
             <div className="logged-in-nav-buttons-container">
-                <NavLink className="shop-now" to='/recipes/new' >Share Your Recipe Now</NavLink>
+                <NavLink className="shop-now" to="/recipes/new">
+                    Share Your Recipe Now
+                </NavLink>
+                <div className="empty-div"></div>
                 <div className="profile-button">
                     <ProfileButton user={sessionUser} />
                 </div>
@@ -51,12 +55,17 @@ function Navigation({ isLoaded }) {
                 <div className="left-tab-container">
                     <div className="home-button-container">
                         <NavLink
+                            style={{ textDecoration: "none" }}
                             exact
                             to="/"
                             className={"home-button-container"}
                         >
                             <div className="label-logo-container">
-                                <div className="eatit-logo">logo</div>
+                                <img
+                                    className="eatit-logo"
+                                    src={logo}
+                                    style={{ height: "50px" }}
+                                ></img>
                                 <div className="eatit-label">EatIt</div>
                             </div>
                         </NavLink>

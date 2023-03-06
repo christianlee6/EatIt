@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModal } from '../../context/Modal';
-import "./OpenModalButton.css"
+import "./OpenEditReviewModalButton.css"
 
 function OpenModalButton({
   modalComponent, // component to render inside the modal
@@ -17,7 +17,7 @@ function OpenModalButton({
   };
 
   return (
-    <button className="open-modal-button" onClick={onClick}>{buttonText}</button>
+    <button className="open-review-modal-button" onClick={onClick}>{buttonText}</button>
   );
 }
 

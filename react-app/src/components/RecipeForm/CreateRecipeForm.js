@@ -69,19 +69,10 @@ const CreateRecipeForm = () => {
         deleteVal.splice(idx, 1);
         setInstructionsVal(deleteVal);
     };
+    // ----------------------------------------------------------------
 
-    const reset = () => {
-        setName("");
-        setDescription("");
-        setCuisine("");
-        setDifficulty(1);
-        setprep_time();
-        setpreview_img("");
-        setNewInstructions("");
-        setNewIngredients("");
-        setServings(null);
-        setErrors([]);
-        setHasSubmitted(false);
+    const handleCancel = () => {
+        history.push("/");
     };
 
     const trimmedArr = [];
@@ -107,7 +98,7 @@ const CreateRecipeForm = () => {
         }
     }
     const instructionsStr = parsedInstructions.join(" ");
-    console.log('instructionsStr', instructionsStr)
+    console.log("instructionsStr", instructionsStr);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -134,10 +125,8 @@ const CreateRecipeForm = () => {
         if (prep_time > 1000)
             errorsArr.push("Prep Time must be less than 1000 minutes");
         if (!preview_img) errorsArr.push("Please enter an image URL");
-        // if (ingredients === ".") errorsArr.push("Please enter at least one ingredient")
-        // if (!newInstructions) errorsArr.push("Please provide at least one step")
         if (!parsedVal || parsedVal === "") {
-            errorsArr.push("Please provide at least one ingredient")
+            errorsArr.push("Please provide at least one ingredient");
         }
         if (!instructionsStr)
             errorsArr.push("Please provide at least one step");
@@ -169,152 +158,151 @@ const CreateRecipeForm = () => {
             console.log("there are no errors");
             console.log("DISPATCH CREATE THUNK");
             const data = await dispatch(createRecipeThunk(recipeInfo));
-            console.log('data', data)
-            history.push(`/recipes/${data.id}`)
+            console.log("data", data);
+            history.push(`/recipes/${data.id}`);
         }
-
     };
 
     return (
         <>
-            <div className="create-recipe-whole-container">
-                <h2 className="create-recipe-header">Share Your Recipe Now</h2>
-                <div className="validation-errors">
-                    {hasSubmitted &&
-                        errors?.map((error) => <div key={error}>{error}</div>)}
-                </div>
-                <div className="create-recipe-form-container form-input-wrapper">
-                    <form onSubmit={handleSubmit}>
-                        <div className="recipe-name-description-container">
-                            <label>
-                                Recipe Name:
-                                <input
-                                    type={"text"}
-                                    value={name}
-                                    placeholder="Give your recipe a name"
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </label>
-                            <label>
-                                Description:
-                                <textarea
-                                    type={"text"}
-                                    value={description}
-                                    placeholder="Share the story behind your recipe and what makes it so special"
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
-                                    }
-                                ></textarea>
-                            </label>
-                            <label>
-                                Cuisine:
-                                <input
-                                    type={"text"}
-                                    value={cuisine}
-                                    placeholder="e.g. Italian"
-                                    onChange={(e) => setCuisine(e.target.value)}
-                                />
-                            </label>
-                            <label>
-                                Preview Image URL:
-                                <input
-                                    type={"text"}
-                                    value={preview_img}
-                                    placeholder="Provide an image URL"
-                                    onChange={(e) =>
-                                        setpreview_img(e.target.value)
-                                    }
-                                />
-                            </label>
-                        </div>
-
-                        <div className="ingredients-container">
-                            <legend>Ingredients </legend>
-                            <p>
-                                Enter one ingredient per line. Include the
-                                quantity (i.e. cups, tablespoons) and
-                                preparation method (i.e. sifted, softened,
-                                chopped).
-                            </p>
-                            <>
-                                {val?.map((data, idx) => {
-                                    return (
-                                        <div>
-                                            <input
-                                                value={data || ""}
+            <div className="login-wrapper">
+                <form onSubmit={handleSubmit}>
+                    <div className="login-header">Create A Recipe</div>
+                    <div className="line-break"></div>
+                    <div className="login-subheader">
+                    Please fill out the form to share your recipe.
+                    </div>
+                    <div className="validation-errors">
+                        {hasSubmitted &&
+                            errors?.map((error) => (
+                                <li key={error}>{error}</li>
+                            ))}
+                    </div>
+                    <div className="form-input-wrapper">
+                        <label className="input-field">
+                            Recipe Name:
+                            <input
+                                type={"text"}
+                                value={name}
+                                placeholder="Give your recipe a name"
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">
+                            Description:
+                            <textarea
+                                cols="39"
+                                rows="3"
+                                type={"text"}
+                                value={description}
+                                placeholder="Share the story behind your recipe and what makes it so special"
+                                onChange={(e) => setDescription(e.target.value)}
+                            ></textarea>
+                        </label>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">
+                            Cuisine:
+                            <input
+                                type={"text"}
+                                value={cuisine}
+                                placeholder="e.g. Italian"
+                                onChange={(e) => setCuisine(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">
+                            Preview Image URL:
+                            <input
+                                type={"text"}
+                                value={preview_img}
+                                placeholder="Provide an image URL"
+                                onChange={(e) => setpreview_img(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">Ingredients </label>
+                        <p>
+                            Enter one ingredient per line. Include the quantity
+                            (i.e. cups, tablespoons) and preparation method
+                            (i.e. sifted, softened, chopped).
+                        </p>
+                        <>
+                            {val?.map((data, idx) => {
+                                return (
+                                    <div className="single-ingredient">
+                                        <input
+                                            cols="35"
+                                            rows="2"
+                                            value={data || ""}
+                                            onChange={(e) =>
+                                                handleChange(e, idx)
+                                            }
+                                            placeholder="e.g. 2 tablespoons butter, softened..."
+                                            required
+                                        />
+                                        <button
+                                            className="delete-ingredient-instruction-button"
+                                            onClick={(e) => handleDelete(idx)}
+                                        >
+                                            x
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                            <button className="add" type="button" onClick={() => handleAdd()}>
+                                ADD INGREDIENT
+                            </button>
+                        </>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">Instructions </label>
+                        <p>
+                            Explain how to make your recipe, including all relevant details such as oven
+                            temperatures, cooking methods, and directions.
+                        </p>
+                        <>
+                            {instructionsVal?.map((instructionData, idx) => {
+                                return (
+                                    <div className="single-instruction">
+                                        <div>Step {idx + 1}</div>
+                                        <div className="instruction-input-and-delete">
+                                            <textarea
+                                                cols="68"
+                                                rows="2"
+                                                value={instructionData || ""}
                                                 onChange={(e) =>
-                                                    handleChange(e, idx)
+                                                    handleInstructionChange(
+                                                        e,
+                                                        idx
+                                                    )
                                                 }
-                                                placeholder="e.g. 2 tablespoons butter, softened..."
+                                                placeholder="e.g. Preheat oven to 350 degrees F..."
                                                 required
                                             />
                                             <button
+                                            className="delete-ingredient-instruction-button"
                                                 onClick={(e) =>
-                                                    handleDelete(idx)
+                                                    handleInstructionDelete(idx)
                                                 }
                                             >
                                                 x
                                             </button>
                                         </div>
-                                    );
-                                })}
-                                <button
-                                    type="button"
-                                    onClick={() => handleAdd()}
-                                >
-                                    ADD INGREDIENT
-                                </button>
-                            </>
-                        </div>
+                                    </div>
+                                );
+                            })}
+                            <button
+                            className="add"
+                                type="button"
+                                onClick={() => handleInstructionAdd()}
+                            >
+                                ADD STEP
+                            </button>
+                        </>
 
-                        <div className="instructions-container">
-                            <legend>Instructions </legend>
-                            <p>
-                                Explain how to make your recipe, including oven
-                                temperatures, cooking methods, and directions.
-                            </p>
-                            <>
-                                {instructionsVal?.map(
-                                    (instructionData, idx) => {
-                                        return (
-                                            <div>
-                                                <div>Step {idx + 1}</div>
-                                                <input
-                                                    value={
-                                                        instructionData || ""
-                                                    }
-                                                    onChange={(e) =>
-                                                        handleInstructionChange(
-                                                            e,
-                                                            idx
-                                                        )
-                                                    }
-                                                    placeholder="e.g. Preheat oven to 350 degrees F..."
-                                                    required
-                                                />
-                                                <button
-                                                    onClick={(e) =>
-                                                        handleInstructionDelete(
-                                                            idx
-                                                        )
-                                                    }
-                                                >
-                                                    x
-                                                </button>
-                                            </div>
-                                        );
-                                    }
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={() => handleInstructionAdd()}
-                                >
-                                    ADD STEP
-                                </button>
-                            </>
-                        </div>
+                        <div className="form-input-break"></div>
 
-                        <label>
+                        <label className="input-field">
                             Servings:
                             <input
                                 type={"number"}
@@ -323,8 +311,9 @@ const CreateRecipeForm = () => {
                                 onChange={(e) => setServings(e.target.value)}
                             />
                         </label>
+                        <div className="form-input-break"></div>
 
-                        <label>
+                        <label className="input-field">
                             Prep Time:
                             <input
                                 type={"number"}
@@ -333,9 +322,10 @@ const CreateRecipeForm = () => {
                                 onChange={(e) => setprep_time(e.target.value)}
                             />
                         </label>
+                        <div className="form-input-break"></div>
 
-                        <label>
-                            Difficulty Rating:
+                        <label className="input-field">
+                            Difficulty Rating:{" "}
                             <select
                                 type="number"
                                 value={difficulty}
@@ -346,18 +336,14 @@ const CreateRecipeForm = () => {
                                 ))}
                             </select>
                         </label>
-
-                        <button
-                            className="create-recipe-submit-button"
-                            type="submit"
-                        >
-                            Submit
-                        </button>
-                        <button className="create-recipe-submit-button">
-                            Cancel
-                        </button>
-                    </form>
-                </div>
+                    </div>
+                    <button className="submit" type="submit">
+                        Submit
+                    </button>
+                    <button className="submit" onClick={handleCancel}>
+                        Cancel
+                    </button>
+                </form>
             </div>
         </>
     );

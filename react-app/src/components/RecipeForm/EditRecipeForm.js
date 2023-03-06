@@ -8,8 +8,9 @@ const EditRecipeForm = () => {
     const history = useHistory();
     const { recipeId } = useParams();
     const recipe = useSelector((state) => state.recipes.singleRecipe);
-    // console.log("recipe:", recipe);
+    console.log("recipe:", recipe);
     const user = useSelector((state) => state.session.user);
+    const errorsArr = [];
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -17,8 +18,8 @@ const EditRecipeForm = () => {
     const [difficulty, setDifficulty] = useState(1);
     const [prep_time, setprep_time] = useState("");
     const [preview_img, setpreview_img] = useState("");
-    const [instructions, setInstructions] = useState("");
-    const [ingredients, setIngredients] = useState("");
+    const [newInstructions, setNewInstructions] = useState("");
+    const [newIngredients, setNewIngredients] = useState("");
     const [servings, setServings] = useState(null);
     const [createdAt, setCreatedAt] = useState("");
     const [updatedAt, setUpdatedAt] = useState("");
@@ -32,7 +33,7 @@ const EditRecipeForm = () => {
 
     for (let i = 0; i < existingIngredients?.length - 1; i++) {
         let ingredient = existingIngredients[i];
-        defaultIngredientState.push(ingredient)
+        defaultIngredientState.push(ingredient);
     }
 
     const [val, setVal] = useState(defaultIngredientState);
@@ -55,10 +56,13 @@ const EditRecipeForm = () => {
     };
 
     // ----------------------------------------------------------------
-    const existingInstructions = recipe.instructions?.split("Step ")
+    const existingInstructions = recipe.instructions?.split("Step ");
+    console.log("existingInstructions", existingInstructions);
+
     const stepsArr = existingInstructions?.filter(
         (instruction) => instruction.length > 1
     );
+    console.log("stepsArr", stepsArr);
 
     const parsedSteps = [];
     for (let i = 0; i < stepsArr?.length; i++) {
@@ -66,8 +70,8 @@ const EditRecipeForm = () => {
         parsedSteps.push(step);
     }
 
-    const [instructionsVal, setInstructionsVal] = useState(parsedSteps)
-    // console.log('instructionVal', instructionsVal)
+    const [instructionsVal, setInstructionsVal] = useState(parsedSteps);
+    console.log("instructionVal", instructionsVal);
 
     // console.log('parsedInstructions', parsedInstructions)
     const handleInstructionAdd = () => {
@@ -87,6 +91,8 @@ const EditRecipeForm = () => {
         setInstructionsVal(deleteVal);
     };
 
+    // ----------------------------------------------------------------
+
     useEffect(() => {}, [dispatch, recipeId]);
 
     useEffect(() => {
@@ -97,96 +103,82 @@ const EditRecipeForm = () => {
             setDifficulty(recipe.difficulty);
             setprep_time(recipe.prep_time);
             setpreview_img(recipe.preview_img);
-            setInstructions(recipe.instructions);
-            setIngredients(recipe.ingredients);
+            setNewInstructions(recipe.instructions);
+            setNewIngredients(recipe.ingredients);
             setServings(recipe.servings);
             setCreatedAt(recipe.created_at);
             setUpdatedAt(recipe.updated_at);
         }
     }, [recipe]);
 
-    const reset = () => {
-        setName("");
-        setDescription("");
-        setCuisine("");
-        setDifficulty(1);
-        setprep_time();
-        setpreview_img("");
-        setInstructions("");
-        setErrors([]);
-        setHasSubmitted(false);
+    const handleCancel = () => {
+        history.push(`/recipes/${recipe.id}`);
     };
 
+    const trimmedArr = [];
+    for (let i = 0; i < val?.length; i++) {
+        let ele = val[i];
+        if (typeof ele === "string") {
+            let trimmedEle = ele?.trim() + ".";
+            trimmedArr?.push(trimmedEle);
+        }
+    }
+    console.log("trimmedArr", trimmedArr);
+    const parsedVal = trimmedArr?.join(" ");
+    console.log("parsedVal", parsedVal);
+    if (!parsedVal) errorsArr.push("Please enter at least one ingredient");
+
+    const parsedInstructions = [];
+    for (let i = 0; i < instructionsVal.length; i++) {
+        let instruction = instructionsVal[i];
+        console.log("instruction", instruction);
+        if (instruction.length !== 0) {
+            let ele = `Step ${i + 1}: ${instruction}`;
+            parsedInstructions.push(ele);
+        }
+    }
+    console.log("parsedInstructions", parsedInstructions);
+
+    const instructionsStr = parsedInstructions.join(" ");
+    console.log("instructionsStr", instructionsStr);
+
     const handleSubmit = async (e) => {
-        // e.preventDefault();
-
-        // const trimmedArr = [];
-        // for (let i = 0; i < val?.length; i++) {
-        //     let ele = val[i];
-        //     if (typeof ele === "string") {
-        //         let trimmedEle = ele?.trim() + ".";
-        //         trimmedArr?.push(trimmedEle);
-        //     }
-        // }
-        // const parsedVal = trimmedArr?.join(" ");
-        // setIngredients(parsedVal);
-
-        // const parsedInstructions = []
-        // for (let i = 0; i < instructionsVal.length; i++) {
-        //     let instruction = instructionsVal[i]
-        //     let ele = `Step ${i + 1}: ${instruction}.`
-        //     parsedInstructions.push(ele)
-        // }
-        // console.log('parsedInstructions', parsedInstructions)
-        // const instructionsStr = parsedInstructions.join(" ")
-        // console.log('instructionsStr', instructionsStr)
-        // setInstructions(instructionsStr)
-
         e.preventDefault();
-        let errorsArr = []
-        setHasSubmitted(true)
+        let errorsArr = [];
+        setHasSubmitted(true);
 
-        const trimmedArr = [];
-        for (let i = 0; i < val?.length; i++) {
-            let ele = val[i];
-            if (typeof ele === "string") {
-                let trimmedEle = ele?.trim() + ".";
-                trimmedArr?.push(trimmedEle);
-            }
+        setNewIngredients(parsedVal);
+
+        setNewInstructions(instructionsStr);
+
+        if (!name) errorsArr.push("Please enter a name for your recipe");
+        if (name.length > 100)
+            errorsArr.push("Recipe name must be less than 100 characters long");
+        if (!description)
+            errorsArr.push("Please enter a description for your recipe");
+        if (description.length > 2500)
+            errorsArr.push(
+                "Description must be less than 2500 characters long"
+            );
+        if (!cuisine) errorsArr.push("Please enter a cuisine");
+        if (cuisine.length > 50)
+            errorsArr.push("Cuisine must be less than 50 characters long");
+        if (!prep_time) errorsArr.push("Please enter a prep time");
+        if (prep_time > 1000)
+            errorsArr.push("Prep Time must be less than 1000 minutes");
+        if (!preview_img) errorsArr.push("Please enter an image URL");
+        if (!parsedVal || parsedVal === "") {
+            errorsArr.push("Please provide at least one ingredient");
         }
-        const parsedVal = trimmedArr?.join(" ");
-        console.log("parsedVal", parsedVal)
-        if (!parsedVal) errorsArr.push("Please enter at least one ingredient")
-        setIngredients(parsedVal);
-        console.log('ingredients', ingredients)
+        if (!instructionsStr)
+            errorsArr.push("Please provide at least one step");
+        if (!servings)
+            errorsArr.push(
+                "Please include the number of servings this recipe makes"
+            );
+        if (servings > 20) errorsArr.push("Servings cannot be more than 20");
 
-        const parsedInstructions = []
-        for (let i = 0; i < instructionsVal.length; i++) {
-            let instruction = instructionsVal[i]
-            if (instruction.length !== 0) {
-                let ele = `Step ${i + 1}: ${instruction}.`
-                parsedInstructions.push(ele)
-            }
-        }
-        const instructionsStr = parsedInstructions.join(" ")
-        console.log('instructionsStr', instructionsStr)
-        setInstructions(instructionsStr)
-
-
-        if (!name) errorsArr.push("Please enter a name for your recipe")
-        if (name.length > 100) errorsArr.push("Recipe name must be less than 100 characters long")
-        if (!description) errorsArr.push("Please enter a description for your recipe")
-        if (description.length > 2500) errorsArr.push("Description must be less than 2500 characters long")
-        if (!cuisine) errorsArr.push("Please enter a cuisine")
-        if (cuisine.length > 50) errorsArr.push("Cuisine must be less than 50 characters long")
-        if (!prep_time) errorsArr.push("Please enter a prep time")
-        if (prep_time > 1000) errorsArr.push("Prep Time must be less than 1000 minutes")
-        if (!preview_img) errorsArr.push("Please enter an image URL")
-        // if (ingredients === ".") errorsArr.push("Please enter at least one ingredient")
-        if (!instructionsStr) errorsArr.push("Please provide at least one step")
-        if (!servings) errorsArr.push("Please include the number of servings this recipe makes")
-        if (servings > 20) errorsArr.push("Servings cannot be more than 20")
-
+        setErrors(errorsArr);
         const recipeInfo = {
             ...recipe,
             name,
@@ -201,163 +193,150 @@ const EditRecipeForm = () => {
             created_at: createdAt,
             updated_at: new Date(),
         };
-        console.log('recipeInfo', recipeInfo)
-        setErrors(errorsArr)
-        console.log('errors', errors)
-        const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId))
-        console.log('data', data)
+        console.log("recipeInfo", recipeInfo);
+        console.log("errors", errors);
 
-        if (data) {
-            history.push(`/recipes/${data.id}`)
+        if (errorsArr.length === 0) {
+            console.log("there are no errors");
+            console.log("DISPATCH CREATE THUNK");
+            const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId));
+            console.log("data", data);
+            history.push(`/recipes/${data.id}`);
         }
-        // const data = await dispatch(editRecipeThunk(recipeInfo, +recipeId));
-        // console.log("data", data);
-        // // console.log("data.errors", data.errors)
-        // if (data.errors) {
-        //     // console.log("errorsArr", errorsArr)
-        //     //   setErrors(errorsArr);
-        //     //   console.log("errors", errors)
-        //     console.log("ln 90");
-        // } else {
-        //     history.push(`/recipes/${data.id}`);
-        // }
     };
 
     return (
         <>
-            <div className="create-recipe-whole-container">
-                <h2 className="create-recipe-header">Edit Your Recipe</h2>
-                <div className="validation-errors">
-                    {hasSubmitted &&
-                        errors?.map((error) => <div key={error}>{error}</div>)}
-                </div>
-                <div className="create-recipe-form-container form-input-wrapper">
-                    <form onSubmit={handleSubmit}>
-                        <div className="recipe-name-description-container">
-                            <label>
-                                Recipe Name:
-                                <input
-                                    type={"text"}
-                                    value={name}
-                                    placeholder="Give your recipe a name"
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </label>
-                            <label>
-                                Description:
-                                <textarea
-                                    type={"text"}
-                                    value={description}
-                                    placeholder="Share the story behind your recipe and what makes it so special"
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
-                                    }
-                                ></textarea>
-                            </label>
-                            <label>
-                                Cuisine:
-                                <input
-                                    type={"text"}
-                                    value={cuisine}
-                                    placeholder="e.g. Italian"
-                                    onChange={(e) => setCuisine(e.target.value)}
-                                />
-                            </label>
-                            <label>
-                                Preview Image URL:
-                                <input
-                                    type={"text"}
-                                    value={preview_img}
-                                    placeholder="Provide an image URL"
-                                    onChange={(e) =>
-                                        setpreview_img(e.target.value)
-                                    }
-                                />
-                            </label>
-                        </div>
+            <div className="login-wrapper">
+                <form onSubmit={handleSubmit}>
+                    <div className="login-header">Edit Your Recipe</div>
+                    <div className="line-break"></div>
+                    <div className="validation-errors">
+                        {hasSubmitted &&
+                            errors?.map((error) => (
+                                <div key={error}>{error}</div>
+                            ))}
+                    </div>
+                    <div className="form-input-wrapper">
+                        <label className="input-field">
+                            Recipe Name:
+                            <input
+                                type={"text"}
+                                value={name}
+                                placeholder="Give your recipe a name"
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
 
-                        <div className="ingredients-container">
-                            <legend>Ingredients </legend>
-                            <p>
-                                Modify any of the ingredients of your recipe.
-                                You can make edits to the quantities, preparation
-                                methods, or needed ingredients of your recipe.
-                            </p>
-                            <>
-                                {val?.map((data, idx) => {
-                                    return (
-                                        <div>
-                                            <input
-                                                value={data || ""}
+                        <label className="input-field">
+                            Description:
+                            <textarea
+                                type={"text"}
+                                value={description}
+                                placeholder="Share the story behind your recipe and what makes it so special"
+                                onChange={(e) => setDescription(e.target.value)}
+                            ></textarea>
+                        </label>
+                        <div className="form-input-break"></div>
+
+                        <label className="input-field">
+                            Cuisine:
+                            <input
+                                type={"text"}
+                                value={cuisine}
+                                placeholder="e.g. Italian"
+                                onChange={(e) => setCuisine(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
+
+                        <label className="input-field">
+                            Preview Image URL:
+                            <input
+                                type={"text"}
+                                value={preview_img}
+                                placeholder="Provide an image URL"
+                                onChange={(e) => setpreview_img(e.target.value)}
+                            />
+                        </label>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">Ingredients </label>
+                        <p>
+                            Modify any of the ingredients of your recipe. You
+                            can make edits to the quantities, preparation
+                            methods, or required ingredients of your recipe.
+                        </p>
+                        <>
+                            {val?.map((data, idx) => {
+                                return (
+                                    <div className="single-ingredient">
+                                        <input
+                                            value={data || ""}
+                                            onChange={(e) =>
+                                                handleChange(e, idx)
+                                            }
+                                            placeholder="e.g. 2 tablespoons butter, softened..."
+                                        />
+                                        <button
+                                            className="delete-ingredient-instruction-button"
+                                            type="button"
+                                            onClick={(e) => handleDelete(idx)}
+                                        >
+                                            x
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                            <button className="add" type="button" onClick={() => handleAdd()}>
+                                ADD INGREDIENT
+                            </button>
+                        </>
+                        <div className="form-input-break"></div>
+                        <label className="input-field">Instructions </label>
+                        <p>
+                            Modify any of the instructions of your recipe. Make
+                            edits to existing instructions, or add or remove
+                            steps.
+                        </p>
+                        <>
+                            {instructionsVal?.map((instructionData, idx) => {
+                                return (
+                                    <div className="single-instruction">
+                                        <div>Step {idx + 1}</div>
+                                        <div className="instruction-input-and-delete">
+                                            <textarea
+                                                value={instructionData || ""}
                                                 onChange={(e) =>
-                                                    handleChange(e, idx)
+                                                    handleInstructionChange(
+                                                        e,
+                                                        idx
+                                                    )
                                                 }
-                                                placeholder="e.g. 2 tablespoons butter, softened..."
+                                                placeholder="e.g. Preheat oven to 350 degrees F..."
                                             />
-                                            <button type="button"
+                                            <button
+                                            className="delete-ingredient-instruction-button"
+                                                type="button"
                                                 onClick={(e) =>
-                                                    handleDelete(idx)
+                                                    handleInstructionDelete(idx)
                                                 }
                                             >
                                                 x
                                             </button>
                                         </div>
-                                    );
-                                })}
-                                <button
-                                    type="button"
-                                    onClick={() => handleAdd()}
-                                >
-                                    ADD INGREDIENT
-                                </button>
-                            </>
-                        </div>
-
-                        <div className="instructions-container">
-                            <legend>Instructions </legend>
-                            <p>
-                                Modify any of the instructions of your recipe. Make edits to existing instructions, or add or remove steps.
-                            </p>
-                            <>
-                                {instructionsVal?.map(
-                                    (instructionData, idx) => {
-                                        return (
-                                            <div>
-                                                <div>Step {idx + 1}</div>
-                                                <input
-                                                    value={
-                                                        instructionData || ""
-                                                    }
-                                                    onChange={(e) =>
-                                                        handleInstructionChange(
-                                                            e,
-                                                            idx
-                                                        )
-                                                    }
-                                                    placeholder="e.g. Preheat oven to 350 degrees F..."
-                                                />
-                                                <button type="button"
-                                                    onClick={(e) =>
-                                                        handleInstructionDelete(
-                                                            idx
-                                                        )
-                                                    }
-                                                >
-                                                    x
-                                                </button>
-                                            </div>
-                                        );
-                                    }
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={() => handleInstructionAdd()}
-                                >
-                                    ADD STEP
-                                </button>
-                            </>
-                        </div>
-
+                                    </div>
+                                );
+                            })}
+                            <button
+                            className="add"
+                                type="button"
+                                onClick={() => handleInstructionAdd()}
+                            >
+                                ADD STEP
+                            </button>
+                        </>
+                        <div className="form-input-break"></div>
                         <label>
                             Servings:
                             <input
@@ -367,6 +346,7 @@ const EditRecipeForm = () => {
                                 onChange={(e) => setServings(e.target.value)}
                             />
                         </label>
+                        <div className="form-input-break"></div>
 
                         <label>
                             Prep Time:
@@ -377,9 +357,10 @@ const EditRecipeForm = () => {
                                 onChange={(e) => setprep_time(e.target.value)}
                             />
                         </label>
+                        <div className="form-input-break"></div>
 
                         <label>
-                            Difficulty Rating:
+                            Difficulty Rating:{" "}
                             <select
                                 type="number"
                                 value={difficulty}
@@ -390,18 +371,20 @@ const EditRecipeForm = () => {
                                 ))}
                             </select>
                         </label>
-
-                        <button
-                            className="create-recipe-submit-button"
-                            type="submit"
-                        >
-                            Submit
-                        </button>
-                        <button className="create-recipe-submit-button">
-                            Cancel
-                        </button>
-                    </form>
-                </div>
+                    </div>
+                    <button
+                        className="submit"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                    <button
+                        className="submit"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </button>
+                </form>
             </div>
         </>
     );

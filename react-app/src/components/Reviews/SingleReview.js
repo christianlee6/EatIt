@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import OpenModalButton from "../OpenModalButton";
+import OpenEditReviewModalButton from "../OpenModalEditReviewButton/OpenEditReviewModalButton";
 import EditReviewForm from "../ReviewForm/EditReviewForm";
 import { deleteReviewThunk } from "../../store/reviews";
 import { getRecipeReviewsThunk } from "../../store/reviews";
 import { useParams } from "react-router-dom";
+import "./SingleReview.css"
 
 const SingleReview = ({ review }) => {
     const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const SingleReview = ({ review }) => {
     //     (dispatch(getRecipeReviewsThunk(recipeId)))
     // }, [dispatch, reviewsArr.length])
 
-    const removeCommentHandleCLick = async (e) => {
+    const removeCommentHandleClick = async (e) => {
         e.preventDefault();
         dispatch(deleteReviewThunk(review.id)).then(dispatch(getRecipeReviewsThunk(recipeId)))
     }
@@ -29,17 +30,20 @@ const SingleReview = ({ review }) => {
         reviewButtons = (
             <div className="single-comment-buttons">
                 <div className="edit-comment-button">
-                    <OpenModalButton
+                    <OpenEditReviewModalButton
                         buttonText="Edit"
                         modalComponent={<EditReviewForm review={review} />}
                     />
                 </div>
+                <span>
+
                 <button
-                    className="delete-comment-button"
-                    onClick={removeCommentHandleCLick}
-                >
-                    X
+                    className="review-buttons"
+                    onClick={removeCommentHandleClick}
+                    >
+                    x
                 </button>
+                    </span>
             </div>
         );
     } else {
