@@ -4,7 +4,7 @@ class Recipe(db.Model):
     __tablename__ = "recipes"
 
     if environment == "production":
-        __table_args__ = {"schema: SCHEMA"}
+        __table_args__ = {"schema": SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     creator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
