@@ -1,13 +1,16 @@
 """empty message
 
 Revision ID: 6d72e5a8922c
-Revises: 
+Revises:
 Create Date: 2023-03-03 12:18:43.240342
 
 """
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '6d72e5a8922c'
@@ -27,6 +30,10 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('recipes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('creator_id', sa.Integer(), nullable=True),
@@ -44,6 +51,11 @@ def upgrade():
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE recipes SET SCHEMA {SCHEMA};")
+
+
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('reviewer_id', sa.Integer(), nullable=True),
@@ -56,6 +68,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['reviewer_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
