@@ -316,14 +316,17 @@ const RecipeDetailPage = ({}) => {
                     </div>
                 </div>
                 <div className="div8">
-                    <div className="recipe-detail-page-instructions-container">
+                    <div className="reviews-container">
                         <div className="recipe-detail-page-instructions-header">
                             REVIEWS
                         </div>
 
                         <>
-                            <div className="recipe-detail-page-add-review-container">
-                                <form onSubmit={handleSubmit}>
+                            <div className="add-review-form-container">
+                                {!user ? null : (<form
+                                    className="add-review-form"
+                                    onSubmit={handleSubmit}
+                                >
                                     <div>Write A Review For This Recipe</div>
                                     <div className="validation-errors">
                                         {hasSubmitted &&
@@ -332,11 +335,13 @@ const RecipeDetailPage = ({}) => {
                                             ))}
                                     </div>
                                     <textarea
+                                        cols="55"
+                                        rows="5"
                                         type="text"
                                         placeholder="Write a review to let the author and other cooks know how this recipe turned out..."
                                         value={review}
-                                        maxLength={"500"}
-                                        minLength={"3"}
+                                        // maxLength={"500"}
+                                        // minLength={"3"}
                                         onChange={(e) =>
                                             setReview(e.target.value)
                                         }
@@ -356,7 +361,8 @@ const RecipeDetailPage = ({}) => {
                                             Submit
                                         </button>
                                     </div>
-                                </form>
+                                </form>)}
+
                             </div>
                         </>
                         <div>
