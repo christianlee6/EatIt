@@ -52,9 +52,9 @@
     height: 34px;
     /* border-style: solid; */
     padding: 18px 46px 20px 20px;
-    border-right: solid;
+    /* border-right: solid;
     border-width: thin;
-    border-color: #ccc;
+    border-color: #ccc; */
 }
 
 .home-button-container {
