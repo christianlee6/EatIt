@@ -71,9 +71,15 @@ margin-top: 25px;
 
 .recipe-detail-pic-container {
     /* margin-left: 50px; */
-    width: 100%;
+    /* width: 50px; */
     /* border-style: solid; */
     /* border-color: salmon; */
+}
+
+.recipe-detail-image {
+    object-fit: cover;
+    width: 50vw;
+    height: 100vh;
 }
 
 
