@@ -27,11 +27,12 @@ function LoginFormModal() {
         setEmail("demo@aa.io");
         setPassword("password");
         const data = await dispatch(login(email, password));
-        if (data) {
-            setErrors(["Invalid credentials. Please try logging in again."]);
-        } else {
-            closeModal();
-        }
+        closeModal()
+        // if (data) {
+        //     setErrors(["Invalid credentials. Please try logging in again."]);
+        // } else {
+        //     closeModal();
+        // }
     };
 
     return (
