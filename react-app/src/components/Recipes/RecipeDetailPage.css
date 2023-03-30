@@ -260,3 +260,7 @@ justify-content: start;
     display: flex;
     flex-direction: column;
   }
+
+  .add-review-form-container {
+    margin-bottom: 5px;
+  }

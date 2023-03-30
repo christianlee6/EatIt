@@ -239,7 +239,7 @@ const CreateRecipeForm = () => {
                                                 handleChange(e, idx)
                                             }
                                             placeholder="e.g. 2 tablespoons butter, softened..."
-                                            required
+
                                         />
                                         <button
                                             className="delete-ingredient-instruction-button"
@@ -277,7 +277,7 @@ const CreateRecipeForm = () => {
                                                     )
                                                 }
                                                 placeholder="e.g. Preheat oven to 350 degrees F..."
-                                                required
+
                                             />
                                             <button
                                             className="delete-ingredient-instruction-button"
