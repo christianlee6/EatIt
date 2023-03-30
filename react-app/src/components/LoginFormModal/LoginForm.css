@@ -1,6 +1,8 @@
 .login-wrapper {
     border-radius: 15px;
     /* background-color: red; */
+    display: flex;
+    flex-direction: column;
   }
 
   .login-header {
