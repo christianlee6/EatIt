@@ -1,6 +1,6 @@
 # Welcome to EatIt!
 
-EatIt is a hybrid clone of New York Times Cooking and AllRecipes. It allows users to post their favorite recipes to share with others. Users can also leave comments and interact with other people's recipes. 
+EatIt is a hybrid clone of New York Times Cooking and AllRecipes. It allows users to post their favorite recipes to share with others. Users can also leave reviews and interact with other people's recipes. 
 
 [Click here to view EatIt's live site.](https://eatit-yo2e.onrender.com)
 
