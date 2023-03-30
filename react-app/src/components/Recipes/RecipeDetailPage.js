@@ -105,7 +105,7 @@ const RecipeDetailPage = ({}) => {
             errorsArr.push("Please include text with your review.");
         }
         if (review.length > 250) {
-            errorsArr.push("Review must be less than 250 characters long");
+            errorsArr.push("Review must be less than 250 characters long.");
         }
         console.log("errorsArr", errorsArr);
         setErrors(errorsArr);
@@ -130,236 +130,245 @@ const RecipeDetailPage = ({}) => {
         <>
             <div class="parent">
                 <div class="div1">
-                <div className="recipe-detail-name-author-container">
-                            <div className="recipe-detail-name-header">
-                                {recipe.name}
-                            </div>
-
-                            <div className="recipe-detail-author">
-                                By {recipe.creator?.first_name}{" "}
-                                {recipe.creator?.last_name}
-                            </div>
-                            <div className="recipe-detail-options">
-                                {recipe?.creator?.id === user?.id ? (
-                                    <div className="recipe-options-container">
-                                        <div>
-                                            This is your recipe. You can edit or
-                                            delete it.
-                                        </div>
-                                        <div className="recipe-option-buttons">
-                                            <button className="review-buttons" onClick={handleRecipeEdit}>
-                                                Edit
-                                            </button>
-                                            <button className="review-buttons"
-                                                onClick={handleRecipeDelete}
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                ) : null}
-                            </div>
+                    <div className="recipe-detail-name-author-container">
+                        <div className="recipe-detail-name-header">
+                            {recipe.name}
                         </div>
+
+                        <div className="recipe-detail-author">
+                            By {recipe.creator?.first_name}{" "}
+                            {recipe.creator?.last_name}
+                        </div>
+                        <div className="recipe-detail-options">
+                            {recipe?.creator?.id === user?.id ? (
+                                <div className="recipe-options-container">
+                                    <div>
+                                        This is your recipe. You can edit or
+                                        delete it.
+                                    </div>
+                                    <div className="recipe-option-buttons">
+                                        <button
+                                            className="review-buttons"
+                                            onClick={handleRecipeEdit}
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            className="review-buttons"
+                                            onClick={handleRecipeDelete}
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
                 </div>
                 <div class="div2">
-                <div className="recipe-detail-pic-container">
-                            <img
-                                src={recipe.preview_img}
-                                className="recipe-detail-image"
-                            />
-                        </div>
+                    <div className="recipe-detail-pic-container">
+                        <img
+                            src={recipe.preview_img}
+                            className="recipe-detail-image"
+                        />
+                    </div>
                 </div>
                 <div class="div3">
-                <div className="recipe-detail-stats-container">
-                            <div className="recipe-detail-stats">
-                                <dt className="stat-label">Time</dt>
-                                <dd className="stat-value">
-                                    {recipe.prep_time} minutes
-                                </dd>
-                                <dt className="stat-label">Rating</dt>
-                                <dd className="stat-value">
-                                    <>
-                                        {isNaN(avgRating) ? (
-                                            <div>None</div>
-                                        ) : (
-                                            avgRating
-                                        )}
-                                    </>
-                                </dd>
-                                <dt className="stat-label">Difficulty</dt>
-                                <dd className="stat-value">
-                                    {recipe.difficulty}
-                                </dd>
-                            </div>
+                    <div className="recipe-detail-stats-container">
+                        <div className="recipe-detail-stats">
+                            <dt className="stat-label">Time</dt>
+                            <dd className="stat-value">
+                                {recipe.prep_time} minutes
+                            </dd>
+                            <dt className="stat-label">Rating</dt>
+                            <dd className="stat-value">
+                                <>
+                                    {isNaN(avgRating) ? (
+                                        <div>None</div>
+                                    ) : (
+                                        avgRating
+                                    )}
+                                </>
+                            </dd>
+                            <dt className="stat-label">Difficulty</dt>
+                            <dd className="stat-value">{recipe.difficulty}</dd>
                         </div>
+                    </div>
                 </div>
                 <div class="div4">
-                <div className="recipe-detail-description-container">
-                            <div className="recipe-detail-description">
-                                {recipe.description}
-                            </div>
+                    <div className="recipe-detail-description-container">
+                        <div className="recipe-detail-description">
+                            {recipe.description}
                         </div>
+                    </div>
                 </div>
                 <div class="div5">
-                <div className="recipe-detail-page-ingredients-container">
-                            <div className="recipe-detail-page-ingredients-header">
-                                INGREDIENTS
-                            </div>
+                    <div className="recipe-detail-page-ingredients-container">
+                        <div className="recipe-detail-page-ingredients-header">
+                            INGREDIENTS
+                        </div>
 
-                            <div className="recipe-detail-page-ingredients-yield">
-                                Yield: {recipe.servings} servings
-                            </div>
+                        <div className="recipe-detail-page-ingredients-yield">
+                            Yield: {recipe.servings} servings
+                        </div>
 
-                            <div className="recipe-detail-page-ingredients-list-container">
-                                {splitIngredients?.map((ingredient, idx) => (
+                        <div className="recipe-detail-page-ingredients-list-container">
+                            {splitIngredients?.map((ingredient, idx) => (
+                                <>
+                                    <div className="recipe-detail-page-single-ingredient">
+                                        {ingredient}
+                                    </div>
+                                </>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div class="div6">
+                    <div className="recipe-detail-page-instructions-container">
+                        <div className="recipe-detail-page-instructions-header">
+                            PREPARATION
+                        </div>
+
+                        <div className="recipe-detail-page-instructions-steps-container">
+                            <div className="recipe-detail-page-single-step-container">
+                                {parsedSteps.map((step, idx) => (
                                     <>
-                                        <div className="recipe-detail-page-single-ingredient">
-                                            {ingredient}
+                                        <div className="recipe-detail-page-single-step">
+                                            Step {idx + 1}:
+                                        </div>
+                                        <div className="recipe-detail-page-single-step-text">
+                                            {step}
                                         </div>
                                     </>
                                 ))}
                             </div>
                         </div>
-                </div>
-                <div class="div6">
-                <div className="recipe-detail-page-instructions-container">
-                            <div className="recipe-detail-page-instructions-header">
-                                PREPARATION
-                            </div>
-
-                            <div className="recipe-detail-page-instructions-steps-container">
-                                <div className="recipe-detail-page-single-step-container">
-                                    {parsedSteps.map((step, idx) => (
-                                        <>
-                                            <div className="recipe-detail-page-single-step">
-                                                Step {idx + 1}:
-                                            </div>
-                                            <div className="recipe-detail-page-single-step-text">
-                                                {step}
-                                            </div>
-                                        </>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                    </div>
                 </div>
                 <div className="div7">
-                <div className="recipe-detail-page-ingredients-container">
-                            <div className="recipe-detail-page-ingredients-header">
-                                RATINGS
-                            </div>
+                    <div className="recipe-detail-page-ingredients-container">
+                        <div className="recipe-detail-page-ingredients-header">
+                            RATINGS
+                        </div>
 
-                            <div className="recipe-detail-page-ingredients-yield">
+                        <div className="recipe-detail-page-ingredients-yield">
+                            <div>
+                                <i class="fa-solid fa-star" />
+                            </div>
+                            <div className="recipe-detail-page-ratings-info">
                                 <div>
-                                    <i class="fa-solid fa-star" />
+                                    {isNaN(avgRating) ? (
+                                        <div>No rating</div>
+                                    ) : (
+                                        <div>{avgRating} out of 5</div>
+                                    )}
                                 </div>
-                                <div className="recipe-detail-page-ratings-info">
-                                    <div>
-                                        {isNaN(avgRating) ? (
-                                            <div>No rating</div>
-                                        ) : (
-                                            <div>{avgRating} out of 5</div>
-                                        )}
-                                    </div>
-                                    <div>{reviewsArr.length} reviews</div>
+                                <div>{reviewsArr.length} reviews</div>
+                            </div>
+                        </div>
+
+                        <div className="recipe-detail-page-your-rating-container">
+                            <div className="your-rating-clear">
+                                <div>Your rating</div>
+                                <div
+                                    onClick={handleClear}
+                                    className="clear-button"
+                                >
+                                    Clear
                                 </div>
                             </div>
-
-                            <div className="recipe-detail-page-your-rating-container">
-                                <div className="your-rating-clear">
-                                    <div>Your rating</div>
-                                    <div
-                                        onClick={handleClear}
-                                        className="clear-button"
-                                    >
-                                        Clear
-                                    </div>
-                                </div>
-                                <div className="star">
-                                    {[...Array(5)].map((_, idx) => {
-                                        let ratingValue = idx + 1;
-                                        return (
-                                            <button
-                                                key={idx}
-                                                onMouseEnter={() =>
-                                                    setHoverFill(ratingValue)
-                                                }
-                                                onMouseLeave={() =>
-                                                    setHoverFill(null)
-                                                }
-                                                onClick={() =>
+                            <div className="star">
+                                {[...Array(5)].map((_, idx) => {
+                                    let ratingValue = idx + 1;
+                                    return (
+                                        <button
+                                            key={idx}
+                                            onMouseEnter={() =>
+                                                setHoverFill(ratingValue)
+                                            }
+                                            onMouseLeave={() =>
+                                                setHoverFill(null)
+                                            }
+                                            onClick={() =>
+                                                setRating(ratingValue)
+                                            }
+                                        >
+                                            <i
+                                                className="fa-solid fa-star "
+                                                size={80}
+                                                style={{
+                                                    color:
+                                                        ratingValue <=
+                                                        (hoverFill || rating)
+                                                            ? "#A7727D"
+                                                            : "#ccc",
+                                                }}
+                                                onChange={() =>
                                                     setRating(ratingValue)
                                                 }
-                                            >
-                                                <i
-                                                    className="fa-solid fa-star "
-                                                    size={80}
-                                                    style={{
-                                                        color:
-                                                            ratingValue <=
-                                                            (hoverFill ||
-                                                                rating)
-                                                                ? "#A7727D"
-                                                                : "#ccc",
-                                                    }}
-                                                    onChange={() =>
-                                                        setRating(ratingValue)
-                                                    }
-                                                    value={ratingValue}
-                                                ></i>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
+                                                value={ratingValue}
+                                            ></i>
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
+                    </div>
                 </div>
                 <div className="div8">
-                <div className="recipe-detail-page-instructions-container">
-                            <div className="recipe-detail-page-instructions-header">
-                                REVIEWS
-                            </div>
-
-                            <>
-                                <div className="recipe-detail-page-add-review-container">
-                                    <form onSubmit={handleSubmit}>
-                                        <div>Write A Review For This Recipe</div>
-                                        <div className="validation-errors">
-                                            {hasSubmitted &&
-                                                errors?.map((error) => (
-                                                    <div key={error}>
-                                                        {error}
-                                                    </div>
-                                                ))}
-                                        </div>
-                                        <textarea
-                                            type="text"
-                                            placeholder="Write a review to let the author and other cooks know how this recipe turned out..."
-                                            value={review}
-                                            maxLength={"500"}
-                                            minLength={"3"}
-                                            onChange={(e) =>
-                                                setReview(e.target.value)
-                                            }
-                                        ></textarea>
-                                        <div className="add-review-actions">
-                                            <button className="review-buttons"
-                                                type="reset"
-                                                onClick={handleCancel}
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button className="review-buttons" type="submit">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </>
-                            <div>
-                                <AllReviews recipe_id={recipeId} />
-                            </div>
+                    <div className="reviews-container">
+                        <div className="recipe-detail-page-instructions-header">
+                            REVIEWS
                         </div>
+
+                        <>
+                            <div className="add-review-form-container">
+                                {!user ? null : (<form
+                                    className="add-review-form"
+                                    onSubmit={handleSubmit}
+                                >
+                                    {/* <div>Write A Review For This Recipe</div> */}
+                                    <div className="review-validation-errors">
+                                        {hasSubmitted &&
+                                            errors?.map((error) => (
+                                                <div key={error}>{error}</div>
+                                            ))}
+                                    </div>
+                                    <textarea
+                                        cols="55"
+                                        rows="5"
+                                        type="text"
+                                        placeholder="Write a review to let the author and other cooks know how this recipe turned out..."
+                                        value={review}
+                                        // maxLength={"500"}
+                                        // minLength={"3"}
+                                        onChange={(e) =>
+                                            setReview(e.target.value)
+                                        }
+                                    ></textarea>
+                                    <div className="add-review-actions">
+                                        <button
+                                            className="review-buttons"
+                                            type="reset"
+                                            onClick={handleCancel}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className="review-buttons"
+                                            type="submit"
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>)}
+
+                            </div>
+                        </>
+                        <div>
+                            <AllReviews recipe_id={recipeId} />
+                        </div>
+                    </div>
                 </div>
             </div>
 

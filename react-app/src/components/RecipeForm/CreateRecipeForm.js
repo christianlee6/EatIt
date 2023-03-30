@@ -109,32 +109,32 @@ const CreateRecipeForm = () => {
         setNewInstructions(instructionsStr);
         console.log("newInstructions", newInstructions);
 
-        if (!name) errorsArr.push("Please enter a name for your recipe");
+        if (!name) errorsArr.push("Please enter a name for your recipe.");
         if (name.length > 100)
-            errorsArr.push("Recipe name must be less than 100 characters long");
+            errorsArr.push("Recipe name must be less than 100 characters long.");
         if (!description)
-            errorsArr.push("Please enter a description for your recipe");
+            errorsArr.push("Please enter a description for your recipe.");
         if (description.length > 2500)
             errorsArr.push(
-                "Description must be less than 2500 characters long"
+                "Description must be less than 2500 characters long."
             );
-        if (!cuisine) errorsArr.push("Please enter a cuisine");
+        if (!cuisine) errorsArr.push("Please enter a cuisine.");
         if (cuisine.length > 50)
-            errorsArr.push("Cuisine must be less than 50 characters long");
-        if (!prep_time) errorsArr.push("Please enter a prep time");
+            errorsArr.push("Cuisine must be less than 50 characters long.");
+        if (!prep_time) errorsArr.push("Please enter a prep time.");
         if (prep_time > 1000)
-            errorsArr.push("Prep Time must be less than 1000 minutes");
-        if (!preview_img) errorsArr.push("Please enter an image URL");
+            errorsArr.push("Prep Time must be less than 1000 minutes.");
+        if (!preview_img) errorsArr.push("Please enter an image URL.");
         if (!parsedVal || parsedVal === "") {
-            errorsArr.push("Please provide at least one ingredient");
+            errorsArr.push("Please provide at least one ingredient.");
         }
         if (!instructionsStr)
-            errorsArr.push("Please provide at least one step");
+            errorsArr.push("Please provide at least one step.");
         if (!servings)
             errorsArr.push(
-                "Please include the number of servings this recipe makes"
+                "Please include the number of servings this recipe makes."
             );
-        if (servings > 20) errorsArr.push("Servings cannot be more than 20");
+        if (servings > 20) errorsArr.push("Servings cannot be more than 20.");
 
         setErrors(errorsArr);
         console.log("errorsArr", errorsArr);
@@ -169,9 +169,9 @@ const CreateRecipeForm = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="login-header">Create A Recipe</div>
                     <div className="line-break"></div>
-                    <div className="login-subheader">
+                    {/* <div className="login-subheader">
                     Please fill out the form to share your recipe.
-                    </div>
+                    </div> */}
                     <div className="validation-errors">
                         {hasSubmitted &&
                             errors?.map((error) => (
@@ -191,8 +191,9 @@ const CreateRecipeForm = () => {
                         <div className="form-input-break"></div>
                         <label className="input-field">
                             Description:
+                            <br></br>
                             <textarea
-                                cols="39"
+                                cols="68"
                                 rows="3"
                                 type={"text"}
                                 value={description}
@@ -239,7 +240,7 @@ const CreateRecipeForm = () => {
                                                 handleChange(e, idx)
                                             }
                                             placeholder="e.g. 2 tablespoons butter, softened..."
-                                            required
+
                                         />
                                         <button
                                             className="delete-ingredient-instruction-button"
@@ -277,7 +278,7 @@ const CreateRecipeForm = () => {
                                                     )
                                                 }
                                                 placeholder="e.g. Preheat oven to 350 degrees F..."
-                                                required
+
                                             />
                                             <button
                                             className="delete-ingredient-instruction-button"

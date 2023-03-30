@@ -4,8 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { createReviewThunk, getRecipeReviewsThunk } from "../../store/reviews";
 import { editReviewThunk } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
-
-
+import "./EditReviewForm.css"
 
 const EditReviewForm = ({ review }) => {
     const dispatch = useDispatch();
@@ -72,7 +71,7 @@ const EditReviewForm = ({ review }) => {
         setErrors(errorsArr);
 
         if (errorsArr.length === 0) {
-            dispatch(editReviewThunk(reviewInfo, review.id)).then(closeModal())
+            dispatch(editReviewThunk(reviewInfo, review.id)).then(closeModal());
         }
         // const data = dispatch(editReviewThunk(reviewInfo, review.id)).then(
         //     () => {
@@ -85,78 +84,91 @@ const EditReviewForm = ({ review }) => {
     };
 
     const handleCancel = async (e) => {
-        e.preventDefault()
-        closeModal()
-    }
+        e.preventDefault();
+        closeModal();
+    };
 
     return (
         <>
-            <div className="login-wrapper">
+            <div className="edit-review-wrapper">
                 <form onSubmit={handleSubmit}>
                     <div className="login-header">Edit Your Review</div>
                     <div className="line-break"></div>
                     <div className="validation-errors">
-                    {hasSubmitted &&
-                        errors?.map((error) => <div key={error}>{error}</div>)}
-                </div>
-                    <textarea
-                        type="text"
-                        value={reviewText}
-                        maxLength={"500"}
-                        minLength={"3"}
-                        onChange={(e) => setReviewText(e.target.value)}
-                    ></textarea>
-                             <div className="recipe-detail-page-your-rating-container">
-                                <div className="your-rating-clear">
-                                    <div>Your rating</div>
-                                    <div
-                                        onClick={handleClear}
-                                        className="clear-button"
-                                    >
-                                        Clear
-                                    </div>
-                                </div>
-                                <div className="star">
-                                    {[...Array(5)].map((_, idx) => {
-                                        let ratingValue = idx + 1;
-                                        return (
-                                            <button
-                                            type="button"
-                                                key={idx}
-                                                onMouseEnter={() =>
-                                                    setHoverFill(ratingValue)
-                                                }
-                                                onMouseLeave={() =>
-                                                    setHoverFill(null)
-                                                }
-                                                onClick={() =>
-                                                    setRating(ratingValue)
-                                                }
-                                            >
-                                                <i
-                                                    className="fa-solid fa-star"
-                                                    size={80}
-                                                    style={{
-                                                        color:
-                                                            ratingValue <=
-                                                            (hoverFill ||
-                                                                rating)
-                                                                ? "#ffe101"
-                                                                : "#ccc",
-                                                    }}
-                                                    onChange={() =>
-                                                        setRating(ratingValue)
-                                                    }
-                                                    value={ratingValue}
-                                                ></i>
-                                            </button>
-                                        );
-                                    })}
+                        {hasSubmitted &&
+                            errors?.map((error) => (
+                                <div key={error}>{error}</div>
+                            ))}
+                    </div>
+                    <div className="form-input-wrapper">
+                        <textarea
+                            cols="69"
+                            rows="5"
+                            type="text"
+                            value={reviewText}
+                            maxLength={"500"}
+                            minLength={"3"}
+                            onChange={(e) => setReviewText(e.target.value)}
+                        ></textarea>
+                        <div className="recipe-detail-page-your-rating-container">
+                            <div className="your-rating-clear">
+                                <div>Your rating</div>
+                                <div
+                                    onClick={handleClear}
+                                    className="clear-button"
+                                >
+                                    Clear
                                 </div>
                             </div>
-                    <div className="add-review-actions">
-                        <button class="review-buttons" type="reset" onClick={handleCancel}>Cancel</button>
-                        <button class="review-buttons" type="submit">Submit</button>
+                            <div className="star">
+                                {[...Array(5)].map((_, idx) => {
+                                    let ratingValue = idx + 1;
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={idx}
+                                            onMouseEnter={() =>
+                                                setHoverFill(ratingValue)
+                                            }
+                                            onMouseLeave={() =>
+                                                setHoverFill(null)
+                                            }
+                                            onClick={() =>
+                                                setRating(ratingValue)
+                                            }
+                                        >
+                                            <i
+                                                className="fa-solid fa-star edit-review"
+                                                size={80}
+                                                style={{
+                                                    color:
+                                                        ratingValue <=
+                                                        (hoverFill || rating)
+                                                            ? "#A7727D"
+                                                            : "#ccc",
+                                                }}
+                                                onChange={() =>
+                                                    setRating(ratingValue)
+                                                }
+                                                value={ratingValue}
+                                            ></i>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="edit-review-actions">
+                        <button
+                            class="submit"
+                            type="reset"
+                            onClick={handleCancel}
+                        >
+                            Cancel
+                        </button>
+                        <button class="submit" type="submit">
+                            Submit
+                        </button>
                     </div>
                 </form>
             </div>

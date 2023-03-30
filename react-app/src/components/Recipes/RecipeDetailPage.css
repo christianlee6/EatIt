@@ -15,7 +15,7 @@ margin-top: 25px;
 .div5 { grid-area: 3 / 2 / 4 / 3; }
 .div6 { grid-area: 3 / 3 / 4 / 4; }
 .div7 { grid-area: 4 / 2 / 5 / 3; }
-.div8 { grid-area: 4 / 3 / 5 / 4; }
+.div8 { grid-area: 4 / 3 / 5 / 4; display: flex; flex-direction: column; justify-content: start;}
 
 .detail-divider {
     height: 0.01rem;
@@ -71,9 +71,15 @@ margin-top: 25px;
 
 .recipe-detail-pic-container {
     /* margin-left: 50px; */
-    width: 100%;
+    /* width: 50px; */
     /* border-style: solid; */
     /* border-color: salmon; */
+}
+
+.recipe-detail-image {
+    object-fit: cover;
+    width: 50vw;
+    height: 50vh;
 }
 
 
@@ -199,6 +205,7 @@ margin-top: 25px;
     border: none;
     cursor: pointer;
     outline: none;
+    justify-self: start;
   }
 
 
@@ -224,10 +231,64 @@ margin-top: 25px;
     margin-top: 15px;
   }
 
-  .review-buttons {
-    border-radius: 10px;
+  /* .review-buttons {
+    border-radius: 2px;
+    border-color: #A7727D;
     margin: 1px;
     background-color: #A7727D;
-    border-color: black;
     cursor: pointer;
+    color: white;
+  } */
+
+
+  .review-buttons {
+      width: 13%;
+    padding: 10px;
+    /* margin: 0px 25px 5px 25px; */
+    margin: 2px;
+    margin-bottom: 10px;
+    border: 1px #A7727D solid;
+    border-radius: 4px;
+    background: #A7727D;
+    color: white;
+    font: bold;
+    cursor: pointer;
+  }
+
+  .recipe-detail-page-add-review-container {
+    align-content: flex-start;
+  }
+
+  form.add-review-form {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .add-review-container {
+display: flex;
+flex-direction: column;
+justify-content: start;
+  }
+
+  .reviews-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .add-review-form-container {
+    margin-bottom: 5px;
+  }
+
+  .review-validation-errors {
+        list-style: none;
+    font-size: 14px;
+    color: #A7727D;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* margin: 0px 20px 10px 30px; */
+    margin-top: 10px;
+    margin-bottom: 10px;
   }

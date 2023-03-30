@@ -22,7 +22,7 @@
     color: #A7727D;
     font-weight: bold;
     font-size: 22px;
-    margin: auto;
+    /* margin: auto; */
     margin-top: 10px;
   }
 
@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 20px 20px 10px 30px;
+    margin: 0px 20px 10px 30px;
   }
 
   .form-input-wrapper {

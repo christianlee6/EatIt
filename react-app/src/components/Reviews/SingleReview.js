@@ -31,17 +31,18 @@ const SingleReview = ({ review }) => {
             <div className="single-comment-buttons">
                 <div className="edit-comment-button">
                     <OpenEditReviewModalButton
-                        buttonText="Edit"
+                        buttonText={<i class="fa-solid fa-pen-to-square"></i>}
                         modalComponent={<EditReviewForm review={review} />}
                     />
                 </div>
                 <span>
 
                 <button
-                    className="review-buttons"
+                type="submit"
+                    className="delete-review-button"
                     onClick={removeCommentHandleClick}
                     >
-                    x
+                    <i class="fa-solid fa-trash"></i>
                 </button>
                     </span>
             </div>
@@ -56,7 +57,7 @@ const SingleReview = ({ review }) => {
                 {review.user?.first_name} {review.user?.last_name}
                 <div className="comment-buttons">{reviewButtons}</div>
             </div>
-            <div className="single-review-content">{review.review}</div>
+            <div className="single-review-content-container">{review.review}</div>
         </div>
     );
 };

@@ -47,9 +47,9 @@ function SignupFormModal() {
                 <form onSubmit={handleSubmit}>
                     <div className="login-header">Sign Up</div>
                     <div className="line-break"></div>
-                    <div className="login-subheader">
+                    {/* <div className="login-subheader">
                         Create an account to start sharing your recipes!
-                    </div>
+                    </div> */}
                     <div className="validation-errors">
                         {errors.length > 0 &&
                             errors.map((error, idx) => (

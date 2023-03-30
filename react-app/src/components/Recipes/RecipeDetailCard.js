@@ -36,7 +36,7 @@ const RecipeDetailCard = ({ recipe }) => {
 
 
                         <div className="recipe-detail-card-rating">
-                            {recipe.avg_rating === 100 ? (<>Rating: n/a</>) : (<>Rating: {recipe.avg_rating}</>)}
+                            {recipe.avg_rating === 100 ? (<>Rating: n/a</>) : (<>Rating: {recipe.avg_rating.toFixed(1)}</>)}
                         </div>
 
                     </div>
