@@ -79,7 +79,7 @@ margin-top: 25px;
 .recipe-detail-image {
     object-fit: cover;
     width: 50vw;
-    height: 100vh;
+    height: 50vh;
 }
 
 
@@ -231,11 +231,27 @@ margin-top: 25px;
     margin-top: 15px;
   }
 
-  .review-buttons {
-    border-radius: 10px;
+  /* .review-buttons {
+    border-radius: 2px;
+    border-color: #A7727D;
     margin: 1px;
     background-color: #A7727D;
-    border-color: black;
+    cursor: pointer;
+    color: white;
+  } */
+
+
+  .review-buttons {
+      width: 13%;
+    padding: 10px;
+    /* margin: 0px 25px 5px 25px; */
+    margin: 2px;
+    margin-bottom: 10px;
+    border: 1px #A7727D solid;
+    border-radius: 4px;
+    background: #A7727D;
+    color: white;
+    font: bold;
     cursor: pointer;
   }
 
@@ -263,4 +279,16 @@ justify-content: start;
 
   .add-review-form-container {
     margin-bottom: 5px;
+  }
+
+  .review-validation-errors {
+        list-style: none;
+    font-size: 14px;
+    color: #A7727D;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* margin: 0px 20px 10px 30px; */
+    margin-top: 10px;
+    margin-bottom: 10px;
   }

@@ -40,9 +40,9 @@ function LoginFormModal() {
                 <form onSubmit={handleSubmit}>
                     <div className="login-header">Log In</div>
                     <div className="line-break"></div>
-                    <div className="login-subheader">
+                    {/* <div className="login-subheader">
                         Welcome to EatIt!
-                    </div>
+                    </div> */}
                     <div className="validation-errors">
                         {errors.length > 0 && errors.map((error, idx) => (
                             <li key={idx}>{error}</li>

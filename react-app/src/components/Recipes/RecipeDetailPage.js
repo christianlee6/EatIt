@@ -105,7 +105,7 @@ const RecipeDetailPage = ({}) => {
             errorsArr.push("Please include text with your review.");
         }
         if (review.length > 250) {
-            errorsArr.push("Review must be less than 250 characters long");
+            errorsArr.push("Review must be less than 250 characters long.");
         }
         console.log("errorsArr", errorsArr);
         setErrors(errorsArr);
@@ -151,13 +151,13 @@ const RecipeDetailPage = ({}) => {
                                             className="review-buttons"
                                             onClick={handleRecipeEdit}
                                         >
-                                            Edit
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                         <button
                                             className="review-buttons"
                                             onClick={handleRecipeDelete}
                                         >
-                                            Delete
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -327,8 +327,8 @@ const RecipeDetailPage = ({}) => {
                                     className="add-review-form"
                                     onSubmit={handleSubmit}
                                 >
-                                    <div>Write A Review For This Recipe</div>
-                                    <div className="validation-errors">
+                                    {/* <div>Write A Review For This Recipe</div> */}
+                                    <div className="review-validation-errors">
                                         {hasSubmitted &&
                                             errors?.map((error) => (
                                                 <div key={error}>{error}</div>

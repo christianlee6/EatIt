@@ -1,7 +1,12 @@
 .open-review-modal-button {
-    border-radius: 10px;
-    margin: 1px;
-    background-color: #A7727D;
-    border-color: black;
+    width: auto;
+    /* padding: 10px; */
+    /* margin: 0px 25px 5px 25px; */
+    margin: 2px;
+    border: 1px #A7727D solid;
+    border-radius: 4px;
+    background: #A7727D;
+    color: white;
+    font: bold;
     cursor: pointer;
 }
