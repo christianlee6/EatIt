@@ -7,5 +7,6 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .5px;
-    line-height: 1.1em
+    line-height: 1.1em;
+    cursor: pointer;
 }
