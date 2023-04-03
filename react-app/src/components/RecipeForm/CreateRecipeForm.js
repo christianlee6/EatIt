@@ -325,7 +325,7 @@ const CreateRecipeForm = () => {
                         </label>
                         <div className="form-input-break"></div>
 
-                        <label className="input-field">
+                        <label className="difficulty-input-field">
                             Difficulty Rating:{" "}
                             <select
                                 type="number"
