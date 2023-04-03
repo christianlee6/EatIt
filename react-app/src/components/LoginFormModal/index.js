@@ -22,20 +22,34 @@ function LoginFormModal() {
         }
     };
 
-    const handleDemoSubmit = async (e) => {
-        e.preventDefault();
-        setEmail("demo@aa.io");
-        setPassword("password");
-        const data = await dispatch(login(email, password));
-        console.log('data', data)
-        // closeModal()
-        if (data !== null) {
-            setErrors(["Invalid credentials. Please try logging in again."]);
-        } else {
-            closeModal();
-        }
+    // const handleDemoSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setEmail("demo@aa.io");
+    //     setPassword("password");
+    //     const data = await dispatch(login(email, password));
+    //     console.log('data', data)
+    //     // closeModal()
+    //     if (data !== null) {
+    //         setErrors(["Invalid credentials. Please try logging in again."]);
+    //     } else {
+    //         closeModal();
+    //     }
+    // };
 
-    };
+    // const loginDemoUser = async (e) => {
+    //     const demo = await dispatch(login({
+    //         email: "demo@aa.io",
+    //         password: "password"
+    //     }))
+    //     console.log(demo)
+    // }
+
+    const loginDemoUser = async (e) => {
+        let email = "demo@aa.io"
+        let password = "password"
+        dispatch(login(email, password))
+        closeModal()
+    }
 
     return (
         <>
@@ -74,7 +88,7 @@ function LoginFormModal() {
                     </div>
                     <button className="submit" type="submit">Log In</button>
                 </form>
-                    <button className="submit" type="button" onClick={handleDemoSubmit}>
+                    <button className="submit" type="button" onClick={loginDemoUser}>
                         Demo User
                     </button>
             </div>
