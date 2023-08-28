@@ -4,6 +4,7 @@
     width: 100%;
     min-height: 445px;
     border-style: solid;
+    border-radius: 15px;
     /* border-color: red; */
     background: #fff;
     border: 1px solid #e6e6e6;
@@ -27,13 +28,14 @@
     width: 500px;
     max-width: 100%;
     min-height: 100%;
-    /* border-radius: 15px; */
+    border-radius: 15px;
 }
 
 .recipe-detail-card-detail-container {
     /* background-color: aquamarine; */
     /* border-style: solid; */
     /* height: 100%; */
+    /* border-radius: 25px; */
     padding: 1em 1em 0.5em;
     display: flex;
     flex-direction: column;
